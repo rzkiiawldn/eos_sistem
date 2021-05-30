@@ -13,7 +13,8 @@
  	public function index()
  	{
  		$data = [
- 			'judul'		=> 'Cetak_invoice'
+ 			'judul'		=> 'Cetak_invoice',
+			 'user'    => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
  		];
  		$this->load->view('templates/header', $data);
  		$this->load->view('templates/sidebar');
@@ -21,4 +22,4 @@
  		$this->load->view('client/cetak_invoice');
  		$this->load->view('templates/footer');
  	}
- } ?>
+ }

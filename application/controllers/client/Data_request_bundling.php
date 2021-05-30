@@ -13,7 +13,8 @@
  	public function index()
  	{
  		$data = [
- 			'judul'		=> 'Data_request_bundling'
+ 			'judul'		=> 'Data_request_bundling',
+			 'user'    => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
  		];
  		$this->load->view('templates/header', $data);
  		$this->load->view('templates/sidebar');
@@ -21,4 +22,4 @@
  		$this->load->view('client/data_request_bundling');
  		$this->load->view('templates/footer');
  	}
- } ?>
+ }

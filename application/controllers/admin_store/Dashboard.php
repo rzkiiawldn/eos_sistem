@@ -22,4 +22,4 @@
  		$this->load->view('admin_store/index');
  		$this->load->view('templates/footer');
  	}
- } ?>
+ }
