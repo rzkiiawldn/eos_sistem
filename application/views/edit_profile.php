@@ -4,6 +4,11 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
+        <div class="col">
+          <?= $this->session->flashdata('pesan'); ?>
+        </div>
+      </div>
+      <div class="row">
         <!-- left column -->
         <div class="col-md-12">
           <!-- general form elements -->

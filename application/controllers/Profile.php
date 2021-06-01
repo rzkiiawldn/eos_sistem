@@ -13,7 +13,7 @@ class Profile extends CI_Controller
 
         $this->form_validation->set_rules('fullname', 'Fullname', 'required|trim');
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
         $this->form_validation->set_rules('phone', 'Phone', 'required|trim');
         $this->form_validation->set_rules('password1', 'Password1', 'trim|min_length[3]|matches[password2]');
         $this->form_validation->set_rules('password2', 'Password2', 'trim|matches[password1]');
@@ -39,7 +39,8 @@ class Profile extends CI_Controller
                 $this->db->set('password', password_hash($password, PASSWORD_DEFAULT));
             }
             $this->db->where('id_user', $id_user);
-            $this->db->update('user');
+            $this->db->update('user');            
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data User Berhasil diubah</div>');
             redirect('profile');
         }
     }
