@@ -30,6 +30,7 @@ class User extends CI_Controller
     {
         $data = [
             'judul'         => 'SISTEM TA',
+            'user'          => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
             'department'    => $this->db->get('department')->result_array()
         ];
 
