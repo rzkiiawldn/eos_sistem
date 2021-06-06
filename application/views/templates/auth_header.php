@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/');?>plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/');?>dist/css/adminlte.min.css">
+  
+  <link rel="icon" href="<?= base_url('assets/img/logo/contohlogo.PNG'); ?>">
 </head>
 <body class="hold-transition login-page" style="background-color:	darkseagreen">
 

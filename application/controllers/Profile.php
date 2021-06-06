@@ -7,7 +7,21 @@ class Profile extends CI_Controller
     public function index()
     {
         $data = [
+            'judul'     => 'Profile',
+            'nama_menu' => 'profile',
+            'user'      => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array()
+        ];
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/navbar');
+        $this->load->view('templates/sidebar');
+        $this->load->view('profile/index');
+        $this->load->view('templates/footer');
+    }
+    public function edit_profile()
+    {
+        $data = [
             'judul'     => 'Edit Profile',
+            'nama_menu' => 'profile',
             'user'      => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array()
         ];
 
@@ -22,7 +36,7 @@ class Profile extends CI_Controller
             $this->load->view('templates/header', $data);
             $this->load->view('templates/navbar');
             $this->load->view('templates/sidebar');
-            $this->load->view('edit_profile');
+            $this->load->view('profile/edit_profile');
             $this->load->view('templates/footer');
         } else {
             $id_user          = $this->input->post('id_user');
@@ -31,6 +45,36 @@ class Profile extends CI_Controller
             $email            = $this->input->post('email');
             $no_telp          = $this->input->post('phone');
             $password         = $this->input->post('password1');
+
+            $image = $_FILES['image'];
+            if ($image = '') {
+            } else {
+                $config['allowed_types']    = 'jpg|PNG|png|jpeg|JPG|JPEG';
+                $config['max_size']         = '2048';
+                $config['upload_path']      = './assets/img/profile/';
+                $this->load->library('upload', $config);
+                if ($this->upload->do_upload('image')) {
+                    $old_gambar         = $data['user']['image'];
+                    if ($old_gambar     != 'default.jpg') {
+                        unlink(FCPATH . 'assets/img/profile/' . $old_gambar);
+                    }
+                    $image   = $this->upload->data('file_name');
+                    $this->db->set('image', $image);
+                } else {
+                    $this->db->set('fullname', $fullname);
+                    $this->db->set('username', $username);
+                    $this->db->set('email', $email);
+                    $this->db->set('no_telp', $no_telp);
+                    if (!empty($password)) {
+                        $this->db->set('password', password_hash($password, PASSWORD_DEFAULT));
+                    }
+                    $this->db->where('id_user', $id_user);
+                    $this->db->update('user');
+
+                    $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Transaksi berhasil diubah</div>');
+                    redirect('profile');
+                }
+            }
             $this->db->set('fullname', $fullname);
             $this->db->set('username', $username);
             $this->db->set('email', $email);
@@ -39,7 +83,7 @@ class Profile extends CI_Controller
                 $this->db->set('password', password_hash($password, PASSWORD_DEFAULT));
             }
             $this->db->where('id_user', $id_user);
-            $this->db->update('user');            
+            $this->db->update('user');
             $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data User Berhasil diubah</div>');
             redirect('profile');
         }

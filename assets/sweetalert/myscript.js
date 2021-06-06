@@ -8,7 +8,7 @@ if (flashData) {
 		'success'
 	)
 }
-
+// 2
 const alertData = $('.flash-wrongusername').data('flashdata');
 console.log(alertData);
 
@@ -19,7 +19,7 @@ if (alertData) {
 		text: 'Wrong Username!'
 	})
 }
-
+// 3
 const wrongData = $('.flash-wrongpassword').data('flashdata');
 console.log(wrongData);
 
@@ -30,7 +30,7 @@ if (wrongData) {
 		text: 'Wrong Password!'
 	})
 }
-
+// 4
 const wrongForgot = $('.flash-forgot').data('flashdata');
 console.log(wrongForgot);
 
@@ -41,7 +41,7 @@ if (wrongForgot) {
 		text: 'Email is not registered!'
 	})
 }
-
+// 5
 const checkEmail = $('.flash-checkemail').data('flashdata');
 console.log(checkEmail);
 
@@ -52,7 +52,7 @@ if (checkEmail) {
 		'success'
 	)
 }
-
+// 6
 const successChange = $('.flash-change').data('flashdata');
 console.log(successChange);
 
@@ -63,7 +63,7 @@ if (successChange) {
 		'success'
 	)
 }
-
+// 7
 const logoutData = $('.flash-logout').data('flashdata');
 console.log(logoutData);
 
@@ -74,7 +74,7 @@ if (logoutData) {
 		'success'
 	)
 }
-
+// 8
 const locationCreate = $('.flash-dataloc').data('flashdata');
 console.log(locationCreate);
 
@@ -85,7 +85,7 @@ if (locationCreate) {
 		'success'
 	)
 }
-
+// 9
 const locationUpdate = $('.flash-updateloc').data('flashdata');
 console.log(locationUpdate);
 
@@ -96,7 +96,7 @@ if (locationUpdate) {
 		'success'
 	)
 }
-
+// 10
 const wrongPass = $('.flash-changepass').data('flashdata');
 console.log(wrongPass);
 
@@ -107,7 +107,7 @@ if (wrongPass) {
 		text: 'Wrong Current Password!'
 	})
 }
-
+// 11
 const wrongNewpass = $('.flash-wrongnewpass').data('flashdata');
 console.log(wrongNewpass);
 
@@ -118,7 +118,7 @@ if (wrongNewpass) {
 		text: 'New password cannot be the same as current password!'
 	})
 }
-
+// 12
 const changePass = $('.flash-successpass').data('flashdata');
 console.log(changePass);
 
@@ -129,7 +129,7 @@ if (changePass) {
 		'success'
 	)
 }
-
+// 13
 $('.delete-user').on('click', function (e) {
 	e.preventDefault();
 	const href = $(this).attr('href');
@@ -148,7 +148,7 @@ $('.delete-user').on('click', function (e) {
 		}
 	})
 });
-
+// 14
 const userEdit = $('.flash-edituser').data('flashdata');
 console.log(userEdit);
 
@@ -159,7 +159,7 @@ if (userEdit) {
 		'success'
 	)
 }
-
+// 15
 const createCounter = $('.flash-datacounter').data('flashdata');
 console.log(createCounter);
 
@@ -170,7 +170,7 @@ if (createCounter) {
 		'success'
 	)
 }
-
+// 16
 const updateCounter = $('.flash-counterupdate').data('flashdata');
 console.log(updateCounter);
 
@@ -181,7 +181,7 @@ if (updateCounter) {
 		'success'
 	)
 }
-
+// 17
 const addStatus = $('.flash-createstatus').data('flashdata');
 console.log(addStatus);
 
@@ -192,7 +192,7 @@ if (addStatus) {
 		'success'
 	)
 }
-
+// 18
 const addSupplier = $('.flash-createsupplier').data('flashdata');
 console.log(addSupplier);
 
@@ -203,7 +203,7 @@ if (addSupplier) {
 		'success'
 	)
 }
-
+// 19
 const addCoa = $('.flash-createcoa').data('flashdata');
 console.log(addCoa);
 
@@ -214,7 +214,7 @@ if (addCoa) {
 		'success'
 	)
 }
-
+// 20
 const selectDept = $('.flash-dept').data('flashdata');
 console.log(selectDept);
 
@@ -225,7 +225,7 @@ if (selectDept) {
 		text: 'Please Select Department!'
 	})
 }
-
+// 21
 const selectLoc = $('.flash-selectloc').data('flashdata');
 console.log(selectLoc);
 
@@ -236,7 +236,7 @@ if (selectLoc) {
 		text: 'Please Select Location!'
 	})
 }
-
+// 22
 const optionDept = $('.flash-selectdept').data('flashdata');
 console.log(optionDept);
 
@@ -247,7 +247,7 @@ if (optionDept) {
 		text: 'Please Select Depertment!'
 	})
 }
-
+// 23
 const addPlafond = $('.flash-createplafond').data('flashdata');
 console.log(addPlafond);
 
@@ -258,7 +258,7 @@ if (addPlafond) {
 		'success'
 	)
 }
-
+// 24
 const noticeDeptloc = $('.flash-deptloc').data('flashdata');
 console.log(noticeDeptloc);
 
@@ -269,7 +269,7 @@ if (noticeDeptloc) {
 		text: 'Department is already exist in this warehouse!'
 	})
 }
-
+// 25
 const topupPlafond = $('.flash-topupplafond').data('flashdata');
 console.log(topupPlafond);
 
@@ -280,7 +280,7 @@ if (topupPlafond) {
 		'success'
 	)
 }
-
+// 26
 const withdrawalPlafond = $('.flash-withdrawalplafond').data('flashdata');
 console.log(withdrawalPlafond);
 
@@ -291,7 +291,7 @@ if (withdrawalPlafond) {
 		'success'
 	)
 }
-
+// 28
 const limitPlafond = $('.flash-limitwithdraw').data('flashdata');
 console.log(limitPlafond);
 
@@ -302,7 +302,7 @@ if (limitPlafond) {
 		text: 'The Withdrawal is bigger in comparison with Cash on Bank!'
 	})
 }
-
+// 29
 const updatePlafond = $('.flash-editcob').data('flashdata');
 console.log(updatePlafond);
 

@@ -22,13 +22,13 @@
 
     <li class="nav-item dropdown user-menu">
       <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-        <img src="<?= base_url(); ?>assets/adminlte/dist/img/avatar.png" class="user-image img-circle elevation-2" alt="User Image">
+        <img src="<?= base_url(); ?>assets/img/profile/<?= $user['image'] ?>" class="user-image img-circle elevation-2" alt="User Image">
         <span class="d-none d-md-inline"> <?= $user['fullname']; ?></span>
       </a>
       <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
         <!-- User image -->
-        <li class="user-header bg-primary">
-          <img src="<?= base_url(); ?>assets/adminlte/dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">
+        <li class="user-header bg-info">
+          <img src="<?= base_url(); ?>assets/img/profile/<?= $user['image'] ?>" class="img-circle elevation-2" alt="User Image">
 
           <p>
             <?= $user['fullname']; ?>
@@ -37,8 +37,8 @@
         </li>
         <!-- Menu Footer-->
         <li class="user-footer">
-          <a href="<?= base_url('profile') ?>" class="btn btn-default btn-flat">Edit Profile</a>
-          <a href="<?= base_url('auth/logout'); ?>" class="btn btn-default btn-flat float-right">Sign out</a>
+          <a href="<?= base_url('profile') ?>" class="btn btn-default btn-flat">Profile</a>
+          <a href="#" data-toggle="modal" data-target="#logoutModal" class="btn btn-default btn-flat float-right">Sign out</a>
         </li>
       </ul>
     </li>

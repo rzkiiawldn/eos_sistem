@@ -1,7 +1,7 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Auth extends CI_Controller 
+class Auth extends CI_Controller
 {
     public function __construct()
     {
@@ -11,25 +11,22 @@ class Auth extends CI_Controller
 
     public function index()
     {
-         if ($this->session->userdata('username')) {
+        if ($this->session->userdata('username')) {
             redirect('profile');
         }
         $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
 
-        if ($this->form_validation->run() == false) 
-        {
+        if ($this->form_validation->run() == false) {
             $data['title'] = 'SISTEM TA';
-            $this->load->view('templates/auth_header',$data);
-            $this->load->view('auth/login',$data);
-            $this->load->view('templates/auth_footer',$data);
-        }
-        else 
-        {
+            $this->load->view('templates/auth_header', $data);
+            $this->load->view('auth/login', $data);
+            $this->load->view('templates/auth_footer', $data);
+        } else {
             $this->_login();
             // $username = $this->input->post('username');
             // $password = $this->input->post('password');  
-            
+
             // $user = $this->db->get_where('user',['username'=>$username])->row_array();
 
             // if ($user) 
@@ -44,7 +41,7 @@ class Auth extends CI_Controller
             //             'image' => $user['image'],
             //             'department_id' => $user['department_id']
             //         ];
-    
+
             //         $this->session->set_userdata($data);
             //         redirect('dashboard');
             //     }
@@ -57,7 +54,7 @@ class Auth extends CI_Controller
             // {
             //     echo 'username salah';
             // }
- 
+
         }
     }
     private function _login()
@@ -65,10 +62,9 @@ class Auth extends CI_Controller
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
-        $user = $this->db->get_where('user',['username'=>$username])->row_array();
+        $user = $this->db->get_where('user', ['username' => $username])->row_array();
 
-        if ($user) 
-        {
+        if ($user) {
             if ($password == $user['password'])
             // if (password_verify($password, $user['password'])) 
             {
@@ -83,29 +79,26 @@ class Auth extends CI_Controller
 
                 $this->session->set_userdata($data);
 
-                if ($user['department_id'] == 1) {
-                    redirect('tech/dashboard');
-                } elseif ($user['department_id'] == 5) {
-                    redirect('client/dashboard');
-                } elseif ($user['department_id'] == 3) {
-                    redirect('admin_store/dashboard');
-                } elseif ($user['department_id'] == 4) {
-                    redirect('admin_operation/dashboard');
-                } elseif ($user['department_id'] == 6) {
-                    redirect('supervisior/dashboard');
-                } else {
-                    redirect('dashboard');
-                }
-            }
-            else 
-            {
-                $this->session->set_flashdata('message2','wrongpassword');
+                // if ($user['department_id'] == 1) {
+                //     redirect('tech/dashboard');
+                // } elseif ($user['department_id'] == 5) {
+                //     redirect('client/dashboard');
+                // } elseif ($user['department_id'] == 3) {
+                //     redirect('admin_store/dashboard');
+                // } elseif ($user['department_id'] == 4) {
+                //     redirect('admin_operation/dashboard');
+                // } elseif ($user['department_id'] == 6) {
+                //     redirect('supervisior/dashboard');
+                // } else {
+                //     redirect('dashboard');
+                // }
+                redirect('dashboard');
+            } else {
+                $this->session->set_flashdata('message2', 'wrongpassword');
                 redirect('auth');
             }
-        }
-        else 
-        {
-            $this->session->set_flashdata('message3','wrongusername');
+        } else {
+            $this->session->set_flashdata('message3', 'wrongusername');
             redirect('auth');
         }
     }
@@ -123,8 +116,7 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('username');
         $this->session->unset_userdata('department_id');
         $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Anda berhasil keluar</div>');
-        $this->session->set_flashdata('message4','flash-logout');
+        $this->session->set_flashdata('message4', 'flash-logout');
         redirect('auth');
     }
-
 }
