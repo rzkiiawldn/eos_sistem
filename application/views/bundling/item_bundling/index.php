@@ -41,7 +41,6 @@
                     <th>BUNDLING CODE</th>
                     <th>BUNDLING NAME</th>
                     <th>BARCODE</th>
-                    <th>CATEGORY</th>
                     <th>MINIMUM STOCK</th>
                     <th width="15%">ACTION</th>
                   </tr>
@@ -51,12 +50,11 @@
                   foreach ($item_bundling as $row) : ?>
                     <tr>
                       <td><?= $no++; ?></td>
+                      <td>?</td>
+                      <td><?= $row['item_bundling_name']; ?></td>
                       <td><?= $row['item_bundling_code']; ?></td>
                       <td><?= $row['item_bundling_name']; ?></td>
-                      <td><?= $row['item_bundling_name']; ?></td>
-                      <td><?= $row['item_bundling_name']; ?></td>
-                      <td><?= $row['item_bundling_name']; ?></td>
-                      <td><?= $row['item_bundling_name']; ?></td>
+                      <td><?= $row['qty']; ?></td>
                       <td>
                         <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
                           <a href="<?= base_url('bundling/item_bundling/detail_item/' . $row['id_item_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>

@@ -1,7 +1,7 @@
 <div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2 mt-4">
+      <div class="row mb-2">
         <div class="col-sm-6">
           <a href="<?= base_url('bundling/item_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
         </div>
@@ -23,10 +23,25 @@
             <div class="card-header">
               <h3 class="card-title"><?= $judul; ?></h3>
             </div>
-            <form method="post" action="">
-              <div class="card-body">
+            <div class="card-body">
+              <form method="post" action="">
                 <div class="row">
-                  <input type="hidden" class="form-control" id="id_item_bundling" name="id_item_bundling" value="<?= $item_bundling['id_item_bundling']; ?>">
+                  <div class="form-group col-md-6">
+                    <label>Manage By *</label>
+                    <select name="id_manage_by" id="id_manage_by" class="form-control">
+                      <option value="" selected disabled>-- pilih --</option>
+                      <?php foreach ($manage_by as $manage) : ?>
+                        <?php if ($item_bundling['id_manage_by'] == $manage['id_manage_by']) { ?>
+                          <option value="<?= $manage['id_manage_by'] ?>" selected><?= $manage['manage_by_name']; ?></option>
+                        <?php } else { ?>
+                          <option value="<?= $manage['id_manage_by'] ?>"><?= $manage['manage_by_name']; ?></option>
+                        <?php } ?>
+                      <?php endforeach ?>
+                    </select>
+                    <?= form_error('id_manage_by', '<small class="text-danger pl-2">', '</small>'); ?>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="form-group col-md-6">
                     <label>bundling code *</label>
                     <input type="text" class="form-control" id="item_bundling_code" name="item_bundling_code" value="<?= $item_bundling['item_bundling_code']; ?>">
@@ -37,54 +52,78 @@
                     <input type="text" class="form-control" id="item_bundling_name" name="item_bundling_name" value="<?= $item_bundling['item_bundling_name']; ?>">
                     <?= form_error('item_bundling_name', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
+                </div>
+                <input type="hidden" class="form-control" id="id_item_bundling" name="id_item_bundling" value="<?= $item_bundling['id_item_bundling']; ?>">
+                <button type="submit" class="btn btn-info">Save</button>
+              </form>
+              <div class="alert alert-info pb-2 pt-2 mt-3" role="alert">
+                Detail Information
+              </div>
+              <form method="post" action="<?= base_url('bundling/item_bundling/add_edit_item') ?>">
+                <div class="row mt-4">
                   <div class="form-group col-md-6">
-                    <label>Manage By *</label>
-                    <select name="id_manage_by" id="id_manage_by" class="form-control">
-                      <option value="" selected disabled>-- pilih --</option>
-                      <?php foreach ($manage_by as $manage) : ?>
-                        <?php if ($manage['id_manage_by'] == $item_bundling['id_manage_by']) { ?>
-                          <option selected value="<?= $manage['id_manage_by'] ?>"><?= $manage['manage_by_name']; ?></option>
-                        <?php } else { ?>
-                          <option value="<?= $manage['id_manage_by'] ?>"><?= $manage['manage_by_name']; ?></option>
-                        <?php } ?>
-                      <?php endforeach ?>
-
-                    </select>
-                    <?= form_error('id_manage_by', '<small class="text-danger pl-2">', '</small>'); ?>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>id item Nonbundling *</label>
-                    <select name="id_item_nonbundling" id="id_item_nonbundling" class="form-control">
-                      <option value="" selected disabled>-- pilih --</option>
+                    <label>Item Name *</label>
+                    <select name="id_item_nonbundling" id="id_item_nonbundling" class="form-control select2bs4" required style="width: 100%;">
+                      <option value="" selected disabled></option>
                       <?php foreach ($item_nonbundling as $item) : ?>
-                        <?php if ($item['id_item_nonbundling'] == $item_bundling['id_item_nonbundling']) { ?>
-                          <option selected value="<?= $item['id_item_nonbundling'] ?>"><?= $item['item_nonbundling_name']; ?></option>
-                        <?php } else { ?>
-                          <option value="<?= $item['id_item_nonbundling'] ?>"><?= $item['item_nonbundling_name']; ?></option>
-                        <?php } ?>
-                      <?php endforeach ?>
-
+                        <option value="<?= $item['id_item_nonbundling'] ?>"><?= $item['item_nonbundling_name']; ?></option>
+                      <?php endforeach; ?>
                     </select>
                     <?= form_error('id_item_nonbundling', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
-                    <label>Total Price *</label>
-                    <div class="input-group mb-3">
+                    <label>Item Qty *</label>
+                    <div class="input-group">
+                      <input type="number" min="1" required class="form-control" id="item_qty" name="item_qty" value="<?= set_value('item_qty'); ?>">
+                      <input type="hidden" class="form-control" id="id_item_bundling" name="id_item_bundling" value="<?= $item_bundling['id_item_bundling']; ?>">
                       <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Rp.</span>
+                        <span class="input-group-text" id="basic-addon1">Pcs</span>
                       </div>
-                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" name="total_price" value="<?= $item_bundling['total_price']; ?>">
                     </div>
-                    <?= form_error('total_price', '<small class="text-danger pl-2">', '</small>'); ?>
+                    <?= form_error('item_qty', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-info float-right">ADD</button>
+              </form>
+              <div class="pt-5">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th width="5%">NO</th>
+                      <th>ITEM NAME</th>
+                      <th>ITEM CODE</th>
+                      <th>BARCODE</th>
+                      <th>Qty</th>
+                      <th width="15%">ACTION</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php $no = 1;
+                    foreach ($item_bundling_detail as $row) : ?>
+                      <tr>
+                        <td><?= $no++; ?></td>
+                        <td><?= $row['item_nonbundling_name']; ?></td>
+                        <td><?= $row['item_nonbundling_code']; ?></td>
+                        <td><?= $row['barcode']; ?></td>
+                        <td><?= $row['item_qty']; ?></td>
+                        <td>
+                          <form action="<?= base_url('bundling/item_bundling/delete_item_satuan/' . $row['id_item_bundling_detail']); ?>" method="post">
+                            <input type="hidden" name="id_item_bundling_detail" value="<?= $row['id_item_bundling_detail'] ?>">
+                            <input type="hidden" name="id_item_bundling" value="<?= $row['id_item_bundling'] ?>">
+                            <input type="hidden" name="item_qty" value="<?= $row['item_qty'] ?>">
+                            <input type="hidden" name="price" value="<?= $row['price'] ?>">
+                            <button type="submit" class="btn btn-sm btn-danger" title="hapus" onclick="return confirm('Delete ?')"><i class="fas fa-trash"></i></button>
+                          </form>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
               </div>
-              <div class="card-footer">
-                <button type="submit" class="btn btn-info float-right">EDIT</button>
-              </div>
-            </form>
+              <a href="<?= base_url('bundling/item_bundling') ?>" class="btn btn-danger" onclick="return confirm('Are You Sure ?')">Finish</a>
+            </div>
           </div>
         </div>
       </div>
-  </section>\
+  </section>
 </div>

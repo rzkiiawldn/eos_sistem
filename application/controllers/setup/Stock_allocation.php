@@ -62,7 +62,7 @@ class Stock_allocation extends CI_Controller
     $data = [
 
       'nama_menu' => 'setup',
-      'judul'             => 'Edit stock_allocation',
+      'judul'             => 'Edit stock allocation',
       'user'              => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'stock_allocation'  => $this->db->get_where('stock_allocation', ['id_stock_allocation' => $id_stock_allocation])->row_array()
     ];

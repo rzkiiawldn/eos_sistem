@@ -44,10 +44,10 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                   <table id="example1" class="table table-bordered table-hover">
-                    <thead>
+                    <thead class="text-uppercase">
                       <tr>
                         <th width="5%">NO</th>
-                        <th>USER</th>
+                        <th>UsER</th>
                         <th>CLIENT CODE</th>
                         <th>CLIENT NAME</th>
                         <th>STOCK ALLOCATION</th>
@@ -59,10 +59,10 @@
                       foreach ($client as $row) : ?>
                         <tr>
                           <td><?= $no++; ?></td>
-                          <td><?= $row['user_id']; ?></td>
+                          <td><?= $row['fullname']; ?></td>
                           <td><?= $row['client_code']; ?></td>
                           <td><?= $row['client_name']; ?></td>
-                          <td><?= $row['id_stock_allocation']; ?></td>
+                          <td><?= $row['stock_allocation_name']; ?></td>
                           <td>
                             <?php if ($user['department_id'] == 1 || $user['department_id'] == 2) { ?>
                               <a href="<?= base_url('setup/client/detail_client/' . $row['id_client']) ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>

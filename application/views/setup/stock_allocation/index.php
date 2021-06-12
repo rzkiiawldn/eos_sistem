@@ -42,11 +42,11 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                   <table id="example1" class="table table-bordered table-hover">
-                    <thead>
+                    <thead class="text-uppercase">
                       <tr>
                         <th width="5%">NO</th>
-                        <th>stock_allocation CODE</th>
-                        <th>stock_allocation NAME</th>
+                        <th>stock allocation CODE</th>
+                        <th>stock allocation NAME</th>
                         <th width="10%">ACTION</th>
                       </tr>
                     </thead>

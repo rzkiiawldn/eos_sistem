@@ -1,16 +1,11 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_user extends CI_Model
 {
     private $_table = "user";
 
-    public function getAll()
+    public function getAll($id_user)
     {
-        $query = "SELECT `user`.*,`department`.`name`
-                    FROM `user` 
-                    JOIN `department` ON `user`.`department_id` = `department`.`department_id`;        
-                    ";
-
-        return $this->db->query($query)->result_array();
+        return $this->db->query("SELECT * FROM user JOIN department ON user.department_id = department.department_id WHERE user.id_user != '$id_user'")->result_array();
     }
 }

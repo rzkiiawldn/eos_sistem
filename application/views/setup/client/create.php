@@ -1,10 +1,10 @@
 <div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2 mt-4">
+      <div class="row mb-2">
         <div class="col-sm-6">
           <div class="dropdown">
-            <a href="<?= base_url('setup/client'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> LIST client</a>
+            <a href="<?= base_url('setup/client'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> LIST CLIENT</a>
           </div>
         </div>
         <div class="col-sm-6">
@@ -27,7 +27,7 @@
               <h3 class="card-title"><?= $judul; ?></h3>
             </div>
             <form method="post" action="" enctype="multipart/form-data">
-              <div class="card-body">
+              <div class="card-body text-uppercase">
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>user *</label>
@@ -51,7 +51,12 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>stock allocation *</label>
-                    <input type="text" class="form-control" id="title" name="id_stock_allocation" value="<?= set_value('id_stock_allocation'); ?>">
+                    <select name="id_stock_allocation" class="form-control select2bs4" required style="width: 100%;">
+                      <option value="" selected disabled></option>
+                      <?php foreach ($stock_allocation as $stock) : ?>
+                        <option value="<?= $stock['id_stock_allocation'] ?>"><?= $stock['stock_allocation_name']; ?></option>
+                      <?php endforeach; ?>
+                    </select>
                     <?= form_error('id_stock_allocation', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>

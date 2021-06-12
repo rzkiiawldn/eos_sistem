@@ -51,12 +51,12 @@
                   foreach ($item_nonbundling as $row) : ?>
                     <tr>
                       <td><?= $no++; ?></td>
+                      <td>?</td>
                       <td><?= $row['item_nonbundling_code']; ?></td>
                       <td><?= $row['item_nonbundling_name']; ?></td>
-                      <td><?= $row['brand']; ?></td>
+                      <td><?= $row['barcode']; ?></td>
                       <td><?= $row['category']; ?></td>
-                      <td><?= $row['category']; ?></td>
-                      <td><?= $row['category']; ?></td>
+                      <td><?= $row['minimum_stock']; ?></td>
                       <td>
 
                         <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>

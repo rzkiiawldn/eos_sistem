@@ -16,12 +16,29 @@ class Client extends CI_Controller
       'judul'     => 'Client',
       'nama_menu' => 'setup',
       'user'      => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
-      'client'  => $this->client_model->get()->result_array()
+      'client'    => $this->db->query("SELECT * FROM client JOIN user ON client.user_id = user.id_user JOIN stock_allocation ON client.id_stock_allocation = stock_allocation.id_stock_allocation")->result_array(),
+      'stock_allocation'  => $this->db->get('stock_allocation')->result_array()
     ];
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar');
     $this->load->view('templates/navbar');
     $this->load->view('setup/client/index');
+    $this->load->view('templates/footer');
+  }
+
+  public function detail_client($id_client)
+  {
+    $data = [
+      'judul'     => 'Client',
+      'nama_menu' => 'setup',
+      'user'      => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
+      'client'    => $this->db->query("SELECT * FROM client JOIN user ON client.user_id = user.id_user JOIN stock_allocation ON client.id_stock_allocation = stock_allocation.id_stock_allocation WHERE id_client = $id_client")->row_array(),
+      'stock_allocation'  => $this->db->get('stock_allocation')->result_array()
+    ];
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/sidebar');
+    $this->load->view('templates/navbar');
+    $this->load->view('setup/client/detail');
     $this->load->view('templates/footer');
   }
 
@@ -32,7 +49,8 @@ class Client extends CI_Controller
       'nama_menu' => 'setup',
       'user'      => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'client'    => $this->client_model->get()->result_array(),
-      'data_user' => $this->db->get('user')->result_array()
+      'data_user' => $this->db->get('user')->result_array(),
+      'stock_allocation'  => $this->db->get('stock_allocation')->result_array()
     ];
     $this->form_validation->set_rules('user_id', 'User', 'required|trim');
     $this->form_validation->set_rules('client_code', 'client code', 'required|trim');
@@ -68,7 +86,8 @@ class Client extends CI_Controller
       'nama_menu' => 'setup',
       'user'      => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'client'    => $this->client_model->get($id_client)->row_array(),
-      'data_user' => $this->db->get('user')->result_array()
+      'data_user' => $this->db->get('user')->result_array(),
+      'stock_allocation'  => $this->db->get('stock_allocation')->result_array()
     ];
     $this->form_validation->set_rules('client_code', 'client Code', 'required|trim');
     $this->form_validation->set_rules('client_name', 'client name', 'required|trim');

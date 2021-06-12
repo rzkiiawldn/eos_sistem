@@ -1,7 +1,7 @@
 <div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2 mt-4">
+      <div class="row mb-2">
         <div class="col-sm-6">
           <a href="<?= base_url('master_data/item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
         </div>

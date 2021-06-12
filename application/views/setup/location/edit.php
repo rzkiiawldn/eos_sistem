@@ -27,7 +27,7 @@
               <h3 class="card-title"><?= $judul; ?></h3>
             </div>
             <form method="post" action="" enctype="multipart/form-data">
-              <div class="card-body">
+              <div class="card-body text-uppercase">
                 <div class="row">
                   <input type="hidden" class="form-control" id="id_location" name="id_location" value="<?= $location['id_location']; ?>">
                   <div class="form-group col-md-6">

@@ -27,7 +27,7 @@
         <!-- ========================= ADMIN STORE ============================== -->
 
         <li class="nav-item">
-          <a href="<?= base_url('dashboard'); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? "active" : null; ?>">
+          <a href="<?= base_url('dashboard'); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
             <i class="nav-icon  fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -62,7 +62,7 @@
               <ul class="nav nav-treeview">
                 <?php foreach ($submenu as $s) : ?>
                   <li class="nav-item">
-                    <a href="<?= base_url($s->url); ?>" class="nav-link <?= strtolower($judul) == strtolower($s->submenu) ? "active" : null; ?>">
+                    <a href="<?= base_url($s->url); ?>" class="nav-link <?= strtolower($judul) == strtolower($s->submenu) ? null : null; ?>">
                       <i class="far fa-circle nav-icon"></i>
                       <p><?= $s->submenu; ?></p>
                     </a>

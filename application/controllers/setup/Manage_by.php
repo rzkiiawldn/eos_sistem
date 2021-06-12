@@ -28,7 +28,7 @@ class Manage_by extends CI_Controller
   public function create_manage_by()
   {
     $data = [
-      'judul'       => 'Create manage by',
+      'judul'       => 'Create Manage By',
       'nama_menu'   => 'setup',
       'user'        => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'manage_by'   => $this->db->get('manage_by')->result_array()
@@ -58,7 +58,7 @@ class Manage_by extends CI_Controller
   public function edit_manage_by($id_manage_by)
   {
     $data = [
-      'judul'       => 'Edit manage_by',
+      'judul'       => 'Edit Manage By',
       'nama_menu'   => 'setup',
       'user'        => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'manage_by'   => $this->db->get_where('manage_by', ['id_manage_by' => $id_manage_by])->row_array()

@@ -1,7 +1,7 @@
 <div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2 mt-4">
+      <div class="row mb-2">
         <div class="col-sm-6">
           <a href="<?= base_url('bundling/request_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
         </div>
@@ -38,8 +38,8 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>Item Bundling *</label>
-                    <select name="id_item_bundling" id="id_item_bundling" class="form-control">
-                      <option value="" selected disabled>-- pilih --</option>
+                    <select name="id_item_bundling" id="id_item_bundling" class="form-control select2bs4">
+                      <option value="" selected disabled></option>
                       <?php foreach ($item_bundling as $item) : ?>
                         <option value="<?= $item['id_item_bundling'] ?>"><?= $item['item_bundling_name']; ?></option>
                       <?php endforeach ?>
@@ -77,8 +77,6 @@
                     <?= form_error('id_status', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
-              </div>
-              <div class="card-footer">
                 <button type="submit" class="btn btn-info float-right">CREATE</button>
               </div>
             </form>

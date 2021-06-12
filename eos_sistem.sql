@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 06 Jun 2021 pada 12.07
+-- Waktu pembuatan: 12 Jun 2021 pada 06.05
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.3.15
 
@@ -42,7 +42,8 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`id_client`, `user_id`, `client_code`, `client_name`, `id_stock_allocation`, `created_date`) VALUES
-(4, 4, 'a', 'a', 'asd', '2021-06-06 16:31:59');
+(4, 8, 'aa', 'aa', '5', '2021-06-06 16:31:59'),
+(5, 7, 'asaas', 'asasas', '3', '2021-06-12 09:28:21');
 
 -- --------------------------------------------------------
 
@@ -81,9 +82,52 @@ CREATE TABLE `item_bundling` (
   `item_bundling_code` varchar(155) NOT NULL,
   `item_bundling_name` varchar(225) NOT NULL,
   `id_manage_by` varchar(225) NOT NULL,
-  `id_item_nonbundling` int(20) NOT NULL,
-  `total_price` decimal(10,0) NOT NULL
+  `qty` int(20) NOT NULL,
+  `total_price` decimal(10,0) NOT NULL,
+  `created_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `item_bundling`
+--
+
+INSERT INTO `item_bundling` (`id_item_bundling`, `item_bundling_code`, `item_bundling_name`, `id_manage_by`, `qty`, `total_price`, `created_date`) VALUES
+(5, 'abc', 'abcs', '1', 5, '4500000', '0000-00-00'),
+(6, 'AS', 'AAASSS', '1', 6, '600000', '0000-00-00'),
+(7, 'bunddd', 'bundddling', '1', 2, '200000', '0000-00-00'),
+(8, 'REAL-5', 'REALME', '1', 3, '6300000', '2021-06-11'),
+(10, 'BC', 'BCCC', '1', 3, '4300000', '2021-06-11');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `item_bundling_detail`
+--
+
+CREATE TABLE `item_bundling_detail` (
+  `id_item_bundling_detail` int(11) NOT NULL,
+  `id_item_bundling` int(11) NOT NULL,
+  `id_item_nonbundling` int(11) NOT NULL,
+  `item_qty` int(11) NOT NULL,
+  `price` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `item_bundling_detail`
+--
+
+INSERT INTO `item_bundling_detail` (`id_item_bundling_detail`, `id_item_bundling`, `id_item_nonbundling`, `item_qty`, `price`) VALUES
+(8, 5, 2, 2, '200000'),
+(10, 6, 2, 2, '200000'),
+(11, 7, 2, 1, '100000'),
+(12, 7, 2, 1, '100000'),
+(13, 6, 2, 2, '200000'),
+(15, 6, 2, 2, '200000'),
+(16, 5, 3, 2, '4200000'),
+(18, 8, 3, 3, '6300000'),
+(24, 5, 2, 1, '100000'),
+(25, 10, 2, 1, '100000'),
+(26, 10, 3, 2, '4200000');
 
 -- --------------------------------------------------------
 
@@ -112,8 +156,17 @@ CREATE TABLE `item_nonbundling` (
   `dimension` int(20) NOT NULL,
   `active` varchar(10) NOT NULL,
   `is_fragile` varchar(10) NOT NULL,
-  `cool_storage` varchar(100) NOT NULL
+  `cool_storage` varchar(100) NOT NULL,
+  `created_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `item_nonbundling`
+--
+
+INSERT INTO `item_nonbundling` (`id_item_nonbundling`, `item_nonbundling_code`, `item_nonbundling_name`, `barcode`, `id_manage_by`, `description`, `brand`, `model`, `category`, `minimum_stock`, `publish_price`, `additional_expired`, `size`, `length`, `width`, `height`, `weight`, `dimension`, `active`, `is_fragile`, `cool_storage`, `created_date`) VALUES
+(2, 'AAMRA', 'NaBB', 'AAMRA', 1, 'asas', 'asas', 'asas', 'asas', 3, 100000, 1, 'L', 1, 1, 1, 1, 2, 'Yes', 'Yes', 'Yes', '0000-00-00'),
+(3, 'POCO-M3', 'POCO', 'POCO-M3', 1, 'Poco M3 adalah bla bla bla', 'XIAOMI', 'HP', 'HP', 100, 2100000, 10, '10', 10, 10, 10, 10, 100, 'Yes', 'Yes', 'Yes', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -149,7 +202,7 @@ CREATE TABLE `manage_by` (
 --
 
 INSERT INTO `manage_by` (`id_manage_by`, `manage_by_code`, `manage_by_name`) VALUES
-(1, '1', '1');
+(1, '1as', '11aaaaa bab');
 
 -- --------------------------------------------------------
 
@@ -168,7 +221,7 @@ CREATE TABLE `packing_type` (
 --
 
 INSERT INTO `packing_type` (`id_packing_type`, `packing_type_code`, `packing_type_name`) VALUES
-(1, '1', '1');
+(1, 'asas', 'aa');
 
 -- --------------------------------------------------------
 
@@ -183,15 +236,17 @@ CREATE TABLE `request_bundling` (
   `id_item_bundling` int(20) NOT NULL,
   `request_quantity` int(11) NOT NULL,
   `id_packing_type` int(11) NOT NULL,
-  `id_status` int(11) NOT NULL
+  `id_status` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `request_bundling`
 --
 
-INSERT INTO `request_bundling` (`id_request_bundling`, `request_bundling_code`, `bundling_type`, `id_item_bundling`, `request_quantity`, `id_packing_type`, `id_status`) VALUES
-(2, '1', 'Bundling from inbound', 1, 1, 1, 1);
+INSERT INTO `request_bundling` (`id_request_bundling`, `request_bundling_code`, `bundling_type`, `id_item_bundling`, `request_quantity`, `id_packing_type`, `id_status`, `id_user`) VALUES
+(2, '1', 'Bundling from inbound', 1, 1, 1, 1, 6),
+(3, 'AABB', 'Bundling from inbound', 10, 10, 1, 1, 7);
 
 -- --------------------------------------------------------
 
@@ -209,7 +264,8 @@ CREATE TABLE `status` (
 --
 
 INSERT INTO `status` (`id_status`, `status`) VALUES
-(1, '1');
+(1, 'cancel'),
+(4, 'success');
 
 -- --------------------------------------------------------
 
@@ -257,12 +313,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `fullname`, `username`, `email`, `no_telp`, `password`, `image`, `department_id`, `created_date`, `created_by`) VALUES
-(1, 'riris', 'risti', 'risti@gmail.com', '12', '1234', 'default.jpg', 1, 78246782, 'riris'),
+(1, 'riris', 'risti', 'risti@gmail.com', '123', '1234', 'default.jpg', 1, 78246782, 'riris'),
 (4, 'supervisior', 'supervisior', 'user@gmail.com', '111', '1234', 'default.jpg', 6, 0, ''),
 (5, 'Admin Store', 'admin_store', 'admin_st@gmail.com', '12211', '1234', 'default.jpg', 3, 0, ''),
 (6, 'admin operational', 'admin_operation', 'admin_op@gmail.com', '1221', '1234', 'default.jpg', 4, 0, ''),
-(7, 'client', 'client', 'user@gmail.com', '1', '1234', 'default.jpg', 5, 0, ''),
-(8, 'tech', 'tech', 'hcy@gmail.com', '0101', '1234', 'default.jpg', 1, 0, ''),
+(7, 'client', 'client', 'user@gmail.com', '1', '1234', 'WhatsApp_Image_2021-05-28_at_22_43_25.jpeg', 5, 0, ''),
+(8, 'tech', 'tech', 'hcy@gmail.comm', '010111', '1234', 'default.jpg', 1, 0, ''),
 (10, 'hod tech', 'hod_tech', 'abc@abc.abc', '121212', '1234', 'default.jpg', 2, 1622796891, 'tech');
 
 -- --------------------------------------------------------
@@ -426,6 +482,12 @@ ALTER TABLE `item_bundling`
   ADD PRIMARY KEY (`id_item_bundling`);
 
 --
+-- Indeks untuk tabel `item_bundling_detail`
+--
+ALTER TABLE `item_bundling_detail`
+  ADD PRIMARY KEY (`id_item_bundling_detail`);
+
+--
 -- Indeks untuk tabel `item_nonbundling`
 --
 ALTER TABLE `item_nonbundling`
@@ -500,7 +562,7 @@ ALTER TABLE `user_submenu`
 -- AUTO_INCREMENT untuk tabel `client`
 --
 ALTER TABLE `client`
-  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `department`
@@ -512,19 +574,25 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT untuk tabel `item_bundling`
 --
 ALTER TABLE `item_bundling`
-  MODIFY `id_item_bundling` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_item_bundling` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT untuk tabel `item_bundling_detail`
+--
+ALTER TABLE `item_bundling_detail`
+  MODIFY `id_item_bundling_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT untuk tabel `item_nonbundling`
 --
 ALTER TABLE `item_nonbundling`
-  MODIFY `id_item_nonbundling` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_item_nonbundling` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `location`
 --
 ALTER TABLE `location`
-  MODIFY `id_location` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_location` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `manage_by`
@@ -542,13 +610,13 @@ ALTER TABLE `packing_type`
 -- AUTO_INCREMENT untuk tabel `request_bundling`
 --
 ALTER TABLE `request_bundling`
-  MODIFY `id_request_bundling` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_request_bundling` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `status`
 --
 ALTER TABLE `status`
-  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `stock_allocation`
@@ -560,7 +628,7 @@ ALTER TABLE `stock_allocation`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_access_menu`
@@ -572,7 +640,7 @@ ALTER TABLE `user_access_menu`
 -- AUTO_INCREMENT untuk tabel `user_menu`
 --
 ALTER TABLE `user_menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_submenu`

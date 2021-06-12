@@ -27,7 +27,7 @@
               <h3 class="card-title"><?= $judul; ?></h3>
             </div>
             <form method="post" action="" enctype="multipart/form-data">
-              <div class="card-body">
+              <div class="card-body text-uppercase">
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>FULLNAME *</label>
@@ -48,7 +48,7 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>PHONE *</label>
-                    <input type="text" class="form-control" id="phone" name="phone" value="<?= set_value('phone'); ?>">
+                    <input type="number" class="form-control" id="phone" name="phone" value="<?= set_value('phone'); ?>">
                     <?= form_error('phone', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>UPLOAD IMAGE *</label>
-                    <input type="file" class="form-control" id="image" name="image">
+                    <input type="file" class="form-control" id="image" name="image" required>
                   </div>
                   <div class="form-group col-md-6">
                     <label>DEPARTMENT *</label>

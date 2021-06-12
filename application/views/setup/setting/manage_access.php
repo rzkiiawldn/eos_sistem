@@ -27,7 +27,7 @@
                 </div>
                 <div class="card-body">
                   <table id="example1" class="table table-bordered table-hover">
-                    <thead>
+                    <thead class="text-uppercase">
                       <tr>
                         <th width="5%">No</th>
                         <th>Menu</th>

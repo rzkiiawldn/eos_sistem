@@ -28,7 +28,7 @@ class Packing_type extends CI_Controller
   public function create_packing_type()
   {
     $data = [
-      'judul'         => 'Create packing Type',
+      'judul'         => 'Create Packing Type',
       'nama_menu'     => 'setup',
       'user'          => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'packing_type'  => $this->db->get('packing_type')->result_array()
@@ -58,7 +58,7 @@ class Packing_type extends CI_Controller
   public function edit_packing_type($id_packing_type)
   {
     $data = [
-      'judul'         => 'Edit packing_type',
+      'judul'         => 'Edit Packing Type',
       'nama_menu'     => 'setup',
       'user'          => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'packing_type'  => $this->db->get_where('packing_type', ['id_packing_type' => $id_packing_type])->row_array()

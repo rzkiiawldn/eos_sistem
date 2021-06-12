@@ -28,7 +28,7 @@ class Department extends CI_Controller
   public function create_department()
   {
     $data = [
-      'judul'       => 'Create department',
+      'judul'       => 'Create Department',
       'nama_menu'   => 'setup',
       'user'        => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'department'  => $this->db->get('department')->result_array()
@@ -60,7 +60,7 @@ class Department extends CI_Controller
   public function edit_department($department_id)
   {
     $data = [
-      'judul'     => 'Edit department',
+      'judul'     => 'Edit Department',
       'nama_menu' => 'setup',
       'user'      => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'department'  => $this->db->get_where('department', ['department_id' => $department_id])->row_array()

@@ -12,11 +12,18 @@ class Request_bundling extends CI_Controller
 
   public function index()
   {
+    $user    = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+    $id_user = $user['id_user'];
+    if ($user['department_id'] == 5) {
+      $request_bundling = $this->db->query("SELECT * FROM request_bundling AS rb LEFT JOIN item_bundling AS ib ON rb.id_item_bundling = ib.id_item_bundling JOIN packing_type AS pt ON rb.id_packing_type = pt.id_packing_type JOIN status ON rb.id_status = status.id_status WHERE rb.id_user = $id_user")->result_array();
+    } else {
+      $request_bundling = $this->db->query("SELECT * FROM request_bundling AS rb LEFT JOIN item_bundling AS ib ON rb.id_item_bundling = ib.id_item_bundling JOIN packing_type AS pt ON rb.id_packing_type = pt.id_packing_type JOIN status ON rb.id_status = status.id_status")->result_array();
+    }
     $data = [
       'judul'             => 'Request Bundling',
       'nama_menu'         => 'bundling',
-      'user'              => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
-      'request_bundling'  => $this->db->get('request_bundling')->result_array()
+      'user'              => $user,
+      'request_bundling'  => $request_bundling,
     ];
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar');
@@ -31,7 +38,7 @@ class Request_bundling extends CI_Controller
       'judul'             => 'Detail Request Bundling',
       'nama_menu'         => 'bundling',
       'user'              => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
-      'request_bundling'  => $this->db->get_where('request_bundling', ['id_request_bundling' => $id_request_bundling])->row_array()
+      'request_bundling'  => $this->db->query("SELECT * FROM request_bundling AS rb JOIN item_bundling AS ib ON rb.id_item_bundling = ib.id_item_bundling JOIN packing_type AS pt ON rb.id_packing_type = pt.id_packing_type JOIN status ON rb.id_status = status.id_status WHERE id_request_bundling = $id_request_bundling")->row_array()
     ];
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar');

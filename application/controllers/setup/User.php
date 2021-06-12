@@ -13,12 +13,13 @@ class User extends CI_Controller
 
     public function index()
     {
+        $id_user = $this->session->userdata('id_user');
         $data = [
 
             'nama_menu' => 'setup',
             'judul'     => 'Users',
             'user'      => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
-            'data_user' => $this->M_user->getAll()
+            'data_user' => $this->M_user->getAll($id_user)
         ];
 
         $this->load->view('templates/header', $data);
@@ -64,7 +65,7 @@ class User extends CI_Controller
                     $image   = $this->upload->data('file_name');
                 } else {
                     $this->session->set_flashdata('pesan', '<div class="alert alert-danger" role="alert">Image</div>');
-                    redirect('user/index');
+                    redirect('setup/user');
                 }
             }
             $data = [
@@ -144,7 +145,7 @@ class User extends CI_Controller
                     $this->db->update('user');
 
                     $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Transaksi berhasil diubah</div>');
-                    redirect('setup/user/edit/' . $id_user);
+                    redirect('setup/user/edit_user/' . $id_user);
                 }
             }
 

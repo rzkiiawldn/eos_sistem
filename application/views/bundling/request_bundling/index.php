@@ -53,10 +53,10 @@
                       <td><?= $no++; ?></td>
                       <td><?= $row['request_bundling_code']; ?></td>
                       <td><?= $row['bundling_type']; ?></td>
-                      <td><?= $row['id_item_bundling']; ?></td>
+                      <td><?= $row['item_bundling_name']; ?></td>
                       <td><?= $row['request_quantity']; ?></td>
-                      <td><?= $row['id_packing_type']; ?></td>
-                      <td><?= $row['id_status']; ?></td>
+                      <td><?= $row['packing_type_name']; ?></td>
+                      <td><?= $row['status']; ?></td>
                       <td>
                         <a href="<?= base_url('bundling/request_bundling/detail_item/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
                         <a href="<?= base_url('bundling/request_bundling/edit_item/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-success" title="edit"><i class="fas fa-pen"></i></a>

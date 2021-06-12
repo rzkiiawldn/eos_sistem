@@ -30,6 +30,24 @@
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#title").autocomplete({
+      source: "<?php echo site_url('setup/client/get_autocomplete/?'); ?>"
+    });
+  });
+</script>
+
+<script>
+  $(function() {
+    $('.select2').select2()
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+  })
+</script>
 
 <!-- jQuery -->
 <script src="<?= base_url('assets/adminlte/'); ?>plugins/jquery/jquery.min.js"></script>
@@ -39,6 +57,9 @@
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
+
+<!-- Select2 -->
+<script src="<?= base_url('assets/adminlte/'); ?>plugins/select2/js/select2.full.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="<?= base_url('assets/adminlte/'); ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
@@ -73,16 +94,9 @@
 <script src="<?= base_url('assets/adminlte/'); ?>plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="<?= base_url('assets/adminlte/'); ?>plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="<?= base_url('assets/adminlte/'); ?>plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#title").autocomplete({
-      source: "<?php echo site_url('setup/client/get_autocomplete/?'); ?>"
-    });
-  });
-</script>
+
+
 
 <script>
   $(function() {
@@ -153,11 +167,15 @@
     $(this).next('.custom-file-label').addClass("selected").html(fileName);
   });
   window.setTimeout(function() {
-    $(".alert").fadeTo(500, 0).slideUp(500, function() {
+    $(".alert_close").fadeTo(500, 0).slideUp(500, function() {
       $(this).remove();
     });
   }, 5000);
 </script>
+
+
+
+
 
 
 

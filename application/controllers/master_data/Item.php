@@ -32,7 +32,7 @@ class Item extends CI_Controller
       'judul'       => 'Detail Item',
       'nama_menu'   => 'master data',
       'user'        => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
-      'item_nonbundling'  => $this->db->get_where('item_nonbundling', ['id_item_nonbundling' => $id_item_nonbundling])->row_array()
+      'item_nonbundling'  => $this->db->query("SELECT * FROM item_nonbundling JOIN manage_by ON item_nonbundling.id_manage_by = manage_by.id_manage_by WHERE id_item_nonbundling = $id_item_nonbundling")->row_array()
     ];
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar');
