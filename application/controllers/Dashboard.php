@@ -6,6 +6,7 @@ class Dashboard extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        belum_login();
         $this->load->library('form_validation');
         date_default_timezone_set('Asia/Jakarta');
     }
