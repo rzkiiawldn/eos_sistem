@@ -21,57 +21,955 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column text-uppercase" data-widget="treeview" role="menu" data-accordion="false">
-        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-
-        <!-- ========================= ADMIN STORE ============================== -->
-
-        <li class="nav-item">
-          <a href="<?= base_url('dashboard'); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
-            <i class="nav-icon  fas fa-tachometer-alt"></i>
-            <p>
-              Dashboard
-            </p>
-          </a>
-        </li>
+        <!-- MEMFILTER DATA CLIENT DAN LOCATION -->
         <?php
-        $id_level = $this->session->userdata('department_id');
-        $menu     = $this->db->query("SELECT * FROM user_menu um JOIN user_access_menu uam ON um.id_menu = uam.id_menu WHERE uam.id_level = $id_level GROUP BY uam.id_menu ORDER BY menu_order ASC")->result();
-        ?>
-        <?php foreach ($menu as $m) : ?>
-          <?php if ($m->url != '#') : ?>
-            <li class="nav-item <?= strtolower($nama_menu) == strtolower($m->menu) ? "menu-open" : null; ?>">
-              <a href="<?= base_url($m->url); ?>" class="nav-link">
-                <i class="nav-icon <?= $m->icon; ?>"></i>
+        $client = $this->db->get('client')->result_array();
+        $location = $this->db->get('location')->result_array() ?>
+        <?php if ($this->session->userdata('department_id') == 1 or $this->session->userdata('department_id') == 2 or $this->session->userdata('department_id') == 3) : ?>
+
+          <!-- ADMIN STORE DAN TECH MEMFILTER CLIENT DAN LOCATION -->
+          <div class="form-group">
+            <select class="form-control select2bs4" onchange="location = this.options[this.selectedIndex].value;">
+              <option value="" selected disabled>--select--</option>
+              <?php foreach ($client as $row) : ?>
+                <?php if ($row['id_client'] == $this->uri->segment(4)) { ?>
+                  <option value="<?= base_url('home/dashboard/index/' . $row['id_client']) ?>" selected><?= $row['client_name']; ?></option>
+                <?php } else { ?>
+                  <option value="<?= base_url('home/dashboard/index/' . $row['id_client']) ?>"><?= $row['client_name']; ?></option>
+                <?php } ?>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <select class="form-control select2bs4" onchange="location = this.options[this.selectedIndex].value;">
+              <option value="" selected disabled>--select--</option>
+              <?php foreach ($location as $row) : ?>
+                <?php if ($row['id_location'] == $this->uri->segment(5)) { ?>
+                  <option value="<?= base_url('home/dashboard/index/' . $this->uri->segment(4) . '/' . $row['id_location']) ?>" selected><?= $row['location_name']; ?></option>
+                <?php } else { ?>
+                  <option value="<?= base_url('home/dashboard/index/' . $this->uri->segment(4) . '/' . $row['id_location']) ?>"><?= $row['location_name']; ?></option>
+                <?php } ?>
+              <?php endforeach; ?>
+            </select>
+
+            <!-- <ul>
+            <?php foreach ($client as $row) : ?>
+              <li><a href="<?= base_url('home/dashboard/index/' . $row['id_client']) ?>">
+                  <?= $row['client_name']; ?></li>
+              </a>
+            <?php endforeach; ?>
+          </ul> -->
+            <!-- <ul>
+              <?php foreach ($location as $row) : ?>
+                <li><a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4) . '/' . $row['id_location']) ?>">
+                    <?= $row['location_name']; ?></li>
+                </a>
+              <?php endforeach; ?>
+            </ul> -->
+          </div>
+          <!-- ADMIN OPERATION DAN SUPERVISIOR HANYA CLIENT -->
+        <?php elseif ($this->session->userdata('department_id') == 4 or $this->session->userdata('department_id') == 6) : ?>
+          <div class="form-group">
+            <select class="form-control select2bs4" onchange="location = this.options[this.selectedIndex].value;">
+              <option value="" selected disabled>--select--</option>
+              <?php foreach ($client as $row) : ?>
+                <?php if ($row['id_client'] == $this->uri->segment(4)) { ?>
+                  <option value="<?= base_url('home/dashboard/index/' . $row['id_client']) ?>" selected><?= $row['client_name']; ?></option>
+                <?php } else { ?>
+                  <option value="<?= base_url('home/dashboard/index/' . $row['id_client']) ?>"><?= $row['client_name']; ?></option>
+                <?php } ?>
+              <?php endforeach; ?>
+            </select>
+          </div>
+        <?php endif; ?>
+
+        <script type="text/javascript">
+          const select = document.querySelector(".myselect");
+          const options = document.querySelectorAll(".myselect option");
+
+          // 1
+          select.addEventListener("change", function() {
+            const url = this.options[this.selectedIndex].dataset.url;
+            if (url) {
+              localStorage.setItem("url", url);
+              location.href = url;
+            }
+          });
+
+          // 2
+          if (localStorage.getItem("url")) {
+            for (const option of options) {
+              const url = option.dataset.url;
+              if (url === localStorage.getItem("url")) {
+                option.setAttribute("selected", "");
+                break;
+              }
+            }
+          }
+        </script>
+
+        <script>
+          const select = document.querySelector("#myselect2");
+          const options = document.querySelectorAll("#myselect2 option");
+
+          // 1
+          select.addEventListener("change", function() {
+            const url = this.options[this.selectedIndex].dataset.url;
+            if (url) {
+              localStorage.setItem("url", url);
+              location.href = url;
+            }
+          });
+
+          // 2
+          if (localStorage.getItem("url")) {
+            for (const option of options) {
+              const url = option.dataset.url;
+              if (url === localStorage.getItem("url")) {
+                option.setAttribute("selected", "");
+                break;
+              }
+            }
+          }
+        </script>
+
+        <!-- AKHIR FILTER -->
+
+        <!-- ============== MENAMPILKAN CLIENT & LOCATION =========================== -->
+
+        <?php if (empty($this->uri->segment(5))) { ?>
+
+          <?php if ($this->session->userdata('department_id') == 3) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
                 <p>
-                  <?= $m->menu; ?>
+                  Dashboard
                 </p>
               </a>
             </li>
-          <?php else : ?>
-            <li class="nav-item <?= strtolower($nama_menu) == strtolower($m->menu) ? "menu-open" : null; ?>">
+            <!-- MASTER DATA -->
+            <li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="nav-icon <?= $m->icon ?> text-white"></i>
+                <i class="nav-icon fas fa-database"></i>
                 <p>
-                  <?= $m->menu; ?>
+                  MASTER DATA
                   <i class="fas fa-angle-left right"></i>
                 </p>
               </a>
-              <?php $id_menu = $m->id_menu ?>
-              <?php $submenu = $this->db->query("SELECT * FROM user_submenu us JOIN user_access_menu uam ON us.id_submenu = uam.id_submenu WHERE uam.id_level = $id_level AND us.menu_id = $id_menu AND us.active = 1 ORDER BY us.submenu_order ASC")->result(); ?>
               <ul class="nav nav-treeview">
-                <?php foreach ($submenu as $s) : ?>
-                  <li class="nav-item">
-                    <a href="<?= base_url($s->url); ?>" class="nav-link <?= strtolower($judul) == strtolower($s->submenu) ? null : null; ?>">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p><?= $s->submenu; ?></p>
-                    </a>
-                  </li>
-                <?php endforeach; ?>
+                <li class="nav-item">
+                  <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
               </ul>
             </li>
           <?php endif; ?>
-        <?php endforeach; ?>
+          <!-- AKHIR ADMIN STORE -->
+          <!-- ADMIN OPERATION -->
+          <?php if ($this->session->userdata('department_id') == 4) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <!-- MASTER DATA -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  MASTER DATA
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  REPORTS
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/report_request_bundling/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/news_bundling_report/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>News Bundling Report</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          <?php endif ?>
+          <!-- AKHIR ADMIN OPERATION -->
+          <!-- CLIENT -->
+          <?php if ($this->session->userdata('department_id') == 5) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <!-- MASTER DATA -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  MASTER DATA
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('master_data/item/index_client/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index_client/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/request_bundling/index_client/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  REPORTS
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/report_request_bundling/index_client/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/news_bundling_report/index_client/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>News Bundling Report</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          <?php endif ?>
+          <!-- AKHIR CLIENT -->
+          <!-- SUPERVISIOR -->
+          <?php if ($this->session->userdata('department_id') == 6) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  REPORTS
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/news_bundling_report/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>News Bundling Report</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          <?php endif ?>
+          <!-- AKHIR SUPERVISIOR -->
+          <!-- TECH & HOD TECH -->
+          <?php if ($this->session->userdata('department_id') == 1 or $this->session->userdata('department_id') == 2) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <!-- MASTER DATA -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  MASTER DATA
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  REPORTS
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/report_request_bundling/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/news_bundling_report/index/' . $this->uri->segment(4)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>News Bundling Report</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  SETUP
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/user'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Users</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/location'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Location</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/client'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Client</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/status'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Status</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/department'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Department</p>
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
+              <a href="<?= base_url('setup/manage_by'); ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Manage By</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="<?= base_url('setup/packing_type'); ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Packing Type</p>
+              </a>
+            </li> -->
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/stock_allocation'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Stock Allocation</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          <?php endif; ?>
+          <!-- JIKA ADA URI 5 -->
+        <?php } else { ?>
+          <!-- ADMIN STORE -->
+          <?php if ($this->session->userdata('department_id') == 3) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <!-- MASTER DATA -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  MASTER DATA
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          <?php endif; ?>
+          <!-- AKHIR ADMIN STORE -->
+          <!-- ADMIN OPERATION -->
+          <?php if ($this->session->userdata('department_id') == 4) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <!-- MASTER DATA -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  MASTER DATA
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  REPORTS
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/report_request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/news_bundling_report/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>News Bundling Report</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          <?php endif; ?>
+          <!-- AKHIR ADMIN OPERATION -->
+          <!-- CLIENT -->
+          <?php if ($this->session->userdata('department_id') == 5) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <!-- MASTER DATA -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  MASTER DATA
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  REPORTS
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/report_request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/news_bundling_report/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>News Bundling Report</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          <?php endif; ?>
+          <!-- AKHIR CLIENT -->
+          <!-- SUPERVISIOR -->
+          <?php if ($this->session->userdata('department_id') == 6) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <!-- MASTER DATA -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  MASTER DATA
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  REPORTS
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/report_request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/news_bundling_report/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>News Bundling Report</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          <?php endif; ?>
+          <!-- AKHIR SUPERVISIOR -->
+          <!-- TECH & HOD TECH -->
+          <?php if ($this->session->userdata('department_id') == 1 or $this->session->userdata('department_id') == 2) : ?>
+            <li class="nav-item">
+              <a href="<?= base_url('home/dashboard/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link <?= strtolower($judul) == $this->uri->segment(1) ? null : null; ?>">
+                <i class="nav-icon  fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+            <!-- MASTER DATA -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  MASTER DATA
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- BUNDLING -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  BUNDLING
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Item Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  REPORTS
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/report_request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Request Bundling</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('reports/news_bundling_report/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>News Bundling Report</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- REPORTS -->
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-database"></i>
+                <p>
+                  SETUP
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/user'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Users</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/location'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Location</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/client'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Client</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/status'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Status</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/department'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Department</p>
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
+              <a href="<?= base_url('setup/manage_by'); ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Manage By</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="<?= base_url('setup/packing_type'); ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Packing Type</p>
+              </a>
+            </li> -->
+                <li class="nav-item">
+                  <a href="<?= base_url('setup/stock_allocation'); ?>" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Stock Allocation</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          <?php endif; ?>
+        <?php } ?>
+
+
+
+        <!-- ===== AKHIR ======= -->
+        <!-- HAPUS AJA NI MENU -->
+
+
 
       </ul>
     </nav>

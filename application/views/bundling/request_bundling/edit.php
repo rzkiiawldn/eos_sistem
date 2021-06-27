@@ -3,7 +3,11 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <a href="<?= base_url('bundling/request_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php if (!empty($this->uri->segment(5))) { ?>
+            <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } else { ?>
+            <a href="<?= base_url('bundling/request_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } ?>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -31,6 +35,11 @@
                     <label>Request Bundling Code *</label>
                     <input type="text" readonly class="form-control" id="request_bundling_code" name="request_bundling_code" value="<?= $request_bundling['request_bundling_code']; ?>">
                     <?= form_error('request_bundling_code', '<small class="text-danger pl-2">', '</small>'); ?>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Barcode *</label>
+                    <input type="text" readonly class="form-control" id="request_bundling_barcode" name="request_bundling_barcode" value="<?= $request_bundling['request_bundling_barcode']; ?>">
+                    <?= form_error('request_bundling_barcode', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
                     <label>Bundling Type *</label>
@@ -100,5 +109,5 @@
           </div>
         </div>
       </div>
-  </section>\
+  </section>
 </div>

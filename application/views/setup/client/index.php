@@ -51,6 +51,7 @@
                         <th>CLIENT CODE</th>
                         <th>CLIENT NAME</th>
                         <th>STOCK ALLOCATION</th>
+                        <th>ACTIVE</th>
                         <th width="15%">ACTION</th>
                       </tr>
                     </thead>
@@ -63,6 +64,7 @@
                           <td><?= $row['client_code']; ?></td>
                           <td><?= $row['client_name']; ?></td>
                           <td><?= $row['stock_allocation_name']; ?></td>
+                          <td><?= $row['active']; ?></td>
                           <td>
                             <?php if ($user['department_id'] == 1 || $user['department_id'] == 2) { ?>
                               <a href="<?= base_url('setup/client/detail_client/' . $row['id_client']) ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>

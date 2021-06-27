@@ -3,7 +3,23 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <a href="<?= base_url('master_data/item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php if (!empty($this->uri->segment(5))) { ?>
+            <?php if ($user['department_id'] == 5) { ?>
+              <a href="<?= base_url('master_data/item/index_client/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } elseif ($user['department_id'] == 4) { ?>
+              <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } else { ?>
+              <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } ?>
+          <?php } else { ?>
+            <?php if ($user['department_id'] == 5) { ?>
+              <a href="<?= base_url('master_data/item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } elseif ($user['department_id'] == 4) { ?>
+              <a href="<?= base_url('master_data/item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } else { ?>
+              <a href="<?= base_url('master_data/item/index_client'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } ?>
+          <?php } ?>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -139,8 +155,15 @@
                 </div>
                 <div class="col-md-6 pt-0 mt-0">
                   <div class="form-group">
+                    <label class="pt-0 mt-0">Manage By</label>
+                    <p class="mb-0 pb-0"><?= $item_nonbundling['manage_by_name']; ?></p>
+                    <hr class="mt-0 pt-0">
+                  </div>
+                </div>
+                <div class="col-md-6 pt-0 mt-0">
+                  <div class="form-group">
                     <label class="pt-0 mt-0">created By</label>
-                    <p class="mb-0 pb-0"><?= $item_nonbundling['id_manage_by']; ?></p>
+                    <p class="mb-0 pb-0"><?= $item_nonbundling['created_by']; ?></p>
                     <hr class="mt-0 pt-0">
                   </div>
                 </div>
@@ -152,7 +175,11 @@
                   </div>
                 </div>
               </div>
-              <a href="<?= base_url('master_data/item'); ?>" class="btn btn-info float-right">Back</a>
+              <!-- <?php if (!empty($this->uri->segment(5))) { ?>
+                <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info float-right">Back</a>
+              <?php } else { ?>
+                <a href="<?= base_url('master_data/item/'); ?>" class="btn btn-info float-right">Back</a>
+              <?php } ?> -->
             </div>
           </div>
         </div>

@@ -462,3 +462,46 @@ HELPER
             redirect('auth/blocked');
         }
     }
+
+
+
+    /// MENUUUUUUU 
+
+    <?php
+        $id_level = $this->session->userdata('department_id');
+        $menu     = $this->db->query("SELECT * FROM user_menu um JOIN user_access_menu uam ON um.id_menu = uam.id_menu WHERE uam.id_level = $id_level GROUP BY uam.id_menu ORDER BY menu_order ASC")->result();
+        ?>
+        <?php foreach ($menu as $m) : ?>
+          <?php if ($m->url != '#') : ?>
+            <li class="nav-item <?= strtolower($nama_menu) == strtolower($m->menu) ? "menu-open" : null; ?>">
+              <a href="<?= base_url($m->url); ?>" class="nav-link">
+                <i class="nav-icon <?= $m->icon; ?>"></i>
+                <p>
+                  <?= $m->menu; ?>
+                </p>
+              </a>
+            </li>
+          <?php else : ?>
+            <li class="nav-item <?= strtolower($nama_menu) == strtolower($m->menu) ? "menu-open" : null; ?>">
+              <a href="#" class="nav-link">
+                <i class="nav-icon <?= $m->icon ?> text-white"></i>
+                <p>
+                  <?= $m->menu; ?>
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <?php $id_menu = $m->id_menu ?>
+              <?php $submenu = $this->db->query("SELECT * FROM user_submenu us JOIN user_access_menu uam ON us.id_submenu = uam.id_submenu WHERE uam.id_level = $id_level AND us.menu_id = $id_menu AND us.active = 1 ORDER BY us.submenu_order ASC")->result(); ?>
+              <ul class="nav nav-treeview">
+                <?php foreach ($submenu as $s) : ?>
+                  <li class="nav-item">
+                    <a href="<?= base_url($s->url); ?>" class="nav-link <?= strtolower($judul) == strtolower($s->submenu) ? null : null; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p><?= $s->submenu; ?></p>
+                    </a>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            </li>
+          <?php endif; ?>
+        <?php endforeach; ?>

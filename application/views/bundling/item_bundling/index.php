@@ -3,8 +3,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
-            <a href="<?= base_url('bundling/item_bundling/create_item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> CREATE</a>
+          <?php if (empty($this->uri->segment(5))) { ?>
+            <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
+              <a href="<?= base_url('bundling/item_bundling/create_item/'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> CREATE</a>
+            <?php } ?>
+          <?php } else { ?>
+            <a href="<?= base_url('bundling/item_bundling/create_item/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> CREATE</a>
           <?php } ?>
         </div>
         <div class="col-sm-6">
@@ -37,11 +41,10 @@
                 <thead>
                   <tr>
                     <th width="5%">NO</th>
-                    <th>TYPE</th>
                     <th>BUNDLING CODE</th>
                     <th>BUNDLING NAME</th>
                     <th>BARCODE</th>
-                    <th>MINIMUM STOCK</th>
+                    <th>Qty</th>
                     <th width="15%">ACTION</th>
                   </tr>
                 </thead>
@@ -50,18 +53,27 @@
                   foreach ($item_bundling as $row) : ?>
                     <tr>
                       <td><?= $no++; ?></td>
-                      <td>?</td>
                       <td><?= $row['item_bundling_name']; ?></td>
                       <td><?= $row['item_bundling_code']; ?></td>
                       <td><?= $row['item_bundling_name']; ?></td>
                       <td><?= $row['qty']; ?></td>
                       <td>
-                        <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
-                          <a href="<?= base_url('bundling/item_bundling/detail_item/' . $row['id_item_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
-                          <a href="<?= base_url('bundling/item_bundling/edit_item/' . $row['id_item_bundling']); ?>" class="btn btn-sm btn-success" title="edit"><i class="fas fa-pen"></i></a>
-                          <a href="<?= base_url('bundling/item_bundling/delete_item/' . $row['id_item_bundling']); ?>" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-sm btn-danger" title="hapus"><i class="fas fa-trash"></i></a>
+                        <?php if (empty($this->uri->segment(5))) { ?>
+                          <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
+                            <a href="<?= base_url('bundling/item_bundling/detail_item/' . $row['id_item_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
+                            <a href="<?= base_url('bundling/item_bundling/edit_item/' . $row['id_item_bundling']); ?>" class="btn btn-sm btn-success" title="edit"><i class="fas fa-pen"></i></a>
+                            <a href="<?= base_url('bundling/item_bundling/delete_item/' . $row['id_item_bundling']); ?>" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-sm btn-danger" title="hapus"><i class="fas fa-trash"></i></a>
+                          <?php } else { ?>
+                            <a href="<?= base_url('bundling/item_bundling/detail_itemclient/' . $row['id_item_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
+                          <?php } ?>
                         <?php } else { ?>
-                          <a href="<?= base_url('bundling/item_bundling/detail_item/' . $row['id_item_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
+                          <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
+                            <a href="<?= base_url('bundling/item_bundling/detail_item/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/'  . $row['id_item_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
+                            <a href="<?= base_url('bundling/item_bundling/edit_item/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/'  . $row['id_item_bundling']); ?>" class="btn btn-sm btn-success" title="edit"><i class="fas fa-pen"></i></a>
+                            <a href="<?= base_url('bundling/item_bundling/delete_item/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/'  . $row['id_item_bundling']); ?>" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-sm btn-danger" title="hapus"><i class="fas fa-trash"></i></a>
+                          <?php } else { ?>
+                            <a href="<?= base_url('bundling/item_bundling/detail_itemclient/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/'  . $row['id_item_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
+                          <?php } ?>
                         <?php } ?>
                       </td>
                     </tr>

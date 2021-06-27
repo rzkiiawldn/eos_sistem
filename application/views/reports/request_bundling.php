@@ -3,9 +3,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
-            <a href="<?= base_url('bundling/request_bundling/create_item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> CREATE</a>
-          <?php } ?>
+
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -37,13 +35,13 @@
                 <thead>
                   <tr>
                     <th width="5%">NO</th>
-                    <th>REQUEST BUNDLING CODE</th>
+                    <th>CODE</th>
                     <th>BUNDLING TYPE</th>
                     <th>ITEM BUNDLING</th>
-                    <th>REQUEST QUANTITY</th>
+                    <th>QTY</th>
                     <th>PACKING TYPE</th>
                     <th>STATUS</th>
-                    <th width="15%">ACTION</th>
+                    <th width="10%">ACTION</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -53,12 +51,16 @@
                       <td><?= $no++; ?></td>
                       <td><?= $row['request_bundling_code']; ?></td>
                       <td><?= $row['bundling_type']; ?></td>
-                      <td><?= $row['id_item_bundling']; ?></td>
+                      <td><?= $row['item_bundling_name']; ?></td>
                       <td><?= $row['request_quantity']; ?></td>
-                      <td><?= $row['id_packing_type']; ?></td>
-                      <td><?= $row['id_status']; ?></td>
-                      <td>
-                        <a href="<?= base_url('reports/report_request_bundling/report/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-info" title="report"><i class="fas fa-print"></i></a>
+                      <td><?= $row['packing_type_name']; ?></td>
+                      <td><?= $row['status']; ?></td>
+                      <td class="text-center">
+                        <?php if (empty($this->uri->segment(5))) { ?>
+                          <a href="<?= base_url('reports/report_request_bundling/detail/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
+                        <?php } else { ?>
+                          <a href="<?= base_url('reports/report_request_bundling/detail/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/' .  $row['id_request_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
+                        <?php } ?>
                       </td>
                     </tr>
                   <?php endforeach; ?>

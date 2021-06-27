@@ -10,14 +10,27 @@ class Item extends CI_Controller
     date_default_timezone_set('Asia/Jakarta');
   }
 
-  public function index()
+  public function index($id_client = null, $id_location = null)
   {
+    $id1 = $id_client;
+    $id2 = $id_location;
+
+    if ($id1 != null and empty($id2)) {
+      $item = $this->db->query("SELECT * FROM item_nonbundling WHERE id_client = $id1")->result_array();
+    } elseif ($id2 != null) {
+      $item = $this->db->query("SELECT * FROM item_nonbundling WHERE id_client = $id1 AND id_location = $id2")->result_array();
+    } else {
+      $item = $this->db->get('item_nonbundling')->result_array();
+    }
+
     $data = [
       'judul'             => 'Item',
       'nama_menu'         => 'master data',
       'user'              => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'manage_by'         => $this->db->get('manage_by')->result_array(),
-      'item_nonbundling'  => $this->db->get('item_nonbundling')->result_array()
+      'client'            => $this->db->get('client')->result_array(),
+      'location'          => $this->db->get('location')->result_array(),
+      'item_nonbundling'  => $item
     ];
     $this->load->view('templates/header', $data);
     $this->load->view('templates/sidebar');
@@ -26,7 +39,51 @@ class Item extends CI_Controller
     $this->load->view('templates/footer');
   }
 
-  public function detail_item($id_item_nonbundling)
+  public function index_client()
+  {
+    $user     = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+    $id_user  = $user['id_user'];
+    $client   = $this->db->get_where('client', ['user_id' => $id_user])->row_array();
+    $id_client = $client['id_client'];
+    $data = [
+      'judul'             => 'Item',
+      'nama_menu'         => 'master data',
+      'user'              => $user,
+      'manage_by'         => $this->db->get('manage_by')->result_array(),
+      'location'          => $this->db->get('location')->result_array(),
+      'item_nonbundling'  => $this->db->get_where('item_nonbundling', ['id_client' => $id_client])->result_array()
+    ];
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/sidebar');
+    $this->load->view('templates/navbar');
+    $this->load->view('master_data/item/index');
+    $this->load->view('templates/footer');
+  }
+
+  public function item_client($id_client)
+  {
+    $data = [
+      'judul'             => 'Item',
+      'nama_menu'         => 'master data',
+      'user'              => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
+      'manage_by'         => $this->db->get('manage_by')->result_array(),
+      'client'            => $this->db->get('client')->result_array(),
+      'id_client'         => $id_client,
+      'location'          => $this->db->query("SELECT * FROM item_nonbundling JOIN location ON item_nonbundling.id_location = location.id_location WHERE id_client = $id_client")->result_array(),
+      'item_nonbundling'  => $this->db->query("SELECT * FROM item_nonbundling WHERE id_client = $id_client")->result_array()
+    ];
+    $this->load->view('templates/header', $data);
+    if ($id_client != null) {
+      $this->load->view('templates/sidebarr');
+    } else {
+      $this->load->view('templates/sidebarr');
+    }
+    $this->load->view('templates/navbar');
+    $this->load->view('master_data/item/index');
+    $this->load->view('templates/footer');
+  }
+
+  public function detail_itemclient($id_item_nonbundling)
   {
     $data = [
       'judul'       => 'Detail Item',
@@ -40,19 +97,59 @@ class Item extends CI_Controller
     $this->load->view('master_data/item/detail');
     $this->load->view('templates/footer');
   }
-
-  public function create_item()
+  public function detail_item($id_client = null, $id_location = null, $id_item_nonbundling)
   {
+    $id1 = $id_client;
+    $id2 = $id_location;
+    $data = [
+      'judul'       => 'Detail Item',
+      'nama_menu'   => 'master data',
+      'user'        => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
+      'id_client'   => $id1,
+      'id_location' => $id2,
+      'item_nonbundling'  => $this->db->query("SELECT * FROM item_nonbundling JOIN manage_by ON item_nonbundling.id_manage_by = manage_by.id_manage_by WHERE id_item_nonbundling = $id_item_nonbundling")->row_array()
+    ];
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/sidebar');
+    $this->load->view('templates/navbar');
+    $this->load->view('master_data/item/detail');
+    $this->load->view('templates/footer');
+  }
+  public function detail_itemm($id_client = null, $id_item_nonbundling)
+  {
+    $id1 = $id_client;
+    $data = [
+      'judul'       => 'Detail Item',
+      'nama_menu'   => 'master data',
+      'user'        => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
+      'id_client'   => $id1,
+      'item_nonbundling'  => $this->db->query("SELECT * FROM item_nonbundling JOIN manage_by ON item_nonbundling.id_manage_by = manage_by.id_manage_by WHERE id_item_nonbundling = $id_item_nonbundling")->row_array()
+    ];
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/sidebar');
+    $this->load->view('templates/navbar');
+    $this->load->view('master_data/item/detail');
+    $this->load->view('templates/footer');
+  }
+
+  public function create_item($id_client = null, $id_location = null)
+  {
+    $id1 = $id_client;
+    $id2 = $id_location;
+
     $data = [
       'judul'       => 'Create Item',
       'nama_menu'   => 'master data',
       'user'        => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'manage_by'   => $this->db->get('manage_by')->result_array(),
-      'select'      => ['Yes', 'No']
+      'id_client'   => $id1,
+      'id_location' => $id2,
+      'select'      => ['Yes', 'No'],
+      'size'        => ['S', 'M', 'L', 'XL', 'XXL'],
     ];
     $this->form_validation->set_rules('item_nonbundling_code', 'item_nonbundling_code', 'required|trim');
     $this->form_validation->set_rules('item_nonbundling_name', 'item_nonbundling_name', 'required|trim');
-    $this->form_validation->set_rules('barcode', 'barcode', 'required|trim');
+    $this->form_validation->set_rules('item_nonbundling_barcode', 'item_nonbundling_barcode', 'required|trim');
     $this->form_validation->set_rules('id_manage_by', 'manage by', 'required|trim');
     $this->form_validation->set_rules('description', 'description', 'required|trim');
     $this->form_validation->set_rules('brand', 'brand', 'required|trim');
@@ -81,7 +178,7 @@ class Item extends CI_Controller
       $data = [
         'item_nonbundling_code'       => htmlspecialchars($this->input->post('item_nonbundling_code')),
         'item_nonbundling_name'       => htmlspecialchars($this->input->post('item_nonbundling_name')),
-        'barcode'                     => htmlspecialchars($this->input->post('barcode')),
+        'item_nonbundling_barcode'                     => htmlspecialchars($this->input->post('item_nonbundling_barcode')),
         'id_manage_by'                => htmlspecialchars($this->input->post('id_manage_by')),
         'description'                 => $this->input->post('description'),
         'brand'                       => htmlspecialchars($this->input->post('brand')),
@@ -99,25 +196,39 @@ class Item extends CI_Controller
         'is_fragile'                  => htmlspecialchars($this->input->post('is_fragile')),
         'active'                      => htmlspecialchars($this->input->post('active')),
         'cool_storage'                => htmlspecialchars($this->input->post('cool_storage')),
+        'id_client'                   => htmlspecialchars($this->input->post('id_client')),
+        'id_location'                 => htmlspecialchars($this->input->post('id_location')),
+        'created_date'                => date('Y-m-d'),
+        'created_by'                  => $this->session->userdata('id_user'),
       ];
       $this->db->insert('item_nonbundling', $data);
-      redirect('master_data/item');
+
+      if (!empty($this->uri->segment(5))) {
+        redirect('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5));
+      } else {
+        redirect('master_data/item');
+      }
     }
   }
 
-  public function edit_item($id_item_nonbundling)
+  public function edit_item($id_client = null, $id_location = null, $id_item_nonbundling)
   {
+    $id1 = $id_client;
+    $id2 = $id_location;
     $data = [
       'judul'             => 'Edit Item',
       'nama_menu'         => 'master data',
       'user'              => $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array(),
       'manage_by'         => $this->db->get('manage_by')->result_array(),
+      'id_client'         => $id1,
+      'id_location'       => $id2,
       'item_nonbundling'  => $this->db->get_where('item_nonbundling', ['id_item_nonbundling' => $id_item_nonbundling])->row_array(),
-      'select'            => ['Yes', 'No']
+      'select'            => ['Yes', 'No'],
+      'size'              => ['S', 'M', 'L', 'XL', 'XXL'],
     ];
     $this->form_validation->set_rules('item_nonbundling_code', 'item_nonbundling_code', 'required|trim');
     $this->form_validation->set_rules('item_nonbundling_name', 'item_nonbundling_name', 'required|trim');
-    $this->form_validation->set_rules('barcode', 'barcode', 'required|trim');
+    $this->form_validation->set_rules('item_nonbundling_barcode', 'item_nonbundling_barcode', 'required|trim');
     $this->form_validation->set_rules('id_manage_by', 'manage by', 'required|trim');
     $this->form_validation->set_rules('description', 'description', 'required|trim');
     $this->form_validation->set_rules('brand', 'brand', 'required|trim');
@@ -146,7 +257,7 @@ class Item extends CI_Controller
       $id_item_nonbundling            = htmlspecialchars($this->input->post('id_item_nonbundling'));
       $item_nonbundling_code          = htmlspecialchars($this->input->post('item_nonbundling_code'));
       $item_nonbundling_name          = htmlspecialchars($this->input->post('item_nonbundling_name'));
-      $barcode                        = htmlspecialchars($this->input->post('barcode'));
+      $item_nonbundling_barcode                        = htmlspecialchars($this->input->post('item_nonbundling_barcode'));
       $id_manage_by                   = htmlspecialchars($this->input->post('id_manage_by'));
       $description                    = $this->input->post('description');
       $brand                          = htmlspecialchars($this->input->post('brand'));
@@ -167,7 +278,7 @@ class Item extends CI_Controller
 
       $this->db->set('item_nonbundling_code', $item_nonbundling_code);
       $this->db->set('item_nonbundling_name', $item_nonbundling_name);
-      $this->db->set('barcode', $barcode);
+      $this->db->set('item_nonbundling_barcode', $item_nonbundling_barcode);
       $this->db->set('id_manage_by', $id_manage_by);
       $this->db->set('description', $description);
       $this->db->set('brand', $brand);
@@ -188,16 +299,24 @@ class Item extends CI_Controller
       $this->db->where('id_item_nonbundling', $id_item_nonbundling);
       $this->db->update('item_nonbundling');
 
-      redirect('master_data/item');
+      if (!empty($this->uri->segment(5))) {
+        redirect('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5));
+      } else {
+        redirect('master_data/item');
+      }
     }
   }
 
 
-  public function delete_item($id_item_nonbundling)
+  public function delete_item($id_client = null, $id_location = null, $id_item_nonbundling)
   {
     $this->db->where('id_item_nonbundling', $id_item_nonbundling);
     $this->db->delete('item_nonbundling');
     $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Data User Berhasil Dihapus</div>');
-    redirect('master_data/item');
+    if (!empty($this->uri->segment(5))) {
+      redirect('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5));
+    } else {
+      redirect('master_data/item');
+    }
   }
 }

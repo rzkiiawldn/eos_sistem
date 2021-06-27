@@ -3,7 +3,11 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <a href="<?= base_url('master_data/item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php if (!empty($this->uri->segment(5))) { ?>
+            <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } else { ?>
+            <a href="<?= base_url('master_data/item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } ?>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -28,7 +32,7 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>Item Nonbundling Code *</label>
-                    <input type="text" class="form-control" id="item_nonbundling_code" name="item_nonbundling_code" value="<?= set_value('item_nonbundling_code'); ?>">
+                    <input type="text" class="form-control" id="item_nonbundling_code" onchange="Barcode()" name="item_nonbundling_code" value="<?= set_value('item_nonbundling_code'); ?>">
                     <?= form_error('item_nonbundling_code', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
@@ -38,8 +42,8 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>barcode *</label>
-                    <input type="text" class="form-control" id="barcode" name="barcode" value="<?= set_value('barcode'); ?>">
-                    <?= form_error('barcode', '<small class="text-danger pl-2">', '</small>'); ?>
+                    <input type="text" class="form-control" id="item_nonbundling_barcode" name="item_nonbundling_barcode" readonly required value="<?= set_value('item_nonbundling_barcode'); ?>">
+                    <?= form_error('item_nonbundling_barcode', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
                     <label>Manage By *</label>
@@ -103,7 +107,11 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>size *</label>
-                    <input type="text" class="form-control" id="size" name="size" value="<?= set_value('size'); ?>">
+                    <select name="size" id="size" class="form-control">
+                      <?php foreach ($size as $row) : ?>
+                        <option value="<?= $row ?>"><?= $row; ?></option>
+                      <?php endforeach; ?>
+                    </select>
                     <?= form_error('size', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
@@ -111,7 +119,7 @@
                   <div class="form-group col-md-3">
                     <label>length *</label>
                     <div class="input-group mb-3">
-                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" name="length" value="<?= set_value('length'); ?>">
+                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" id="length" onchange="Dimension()" name="length" value="<?= set_value('length'); ?>">
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">cm</span>
                       </div>
@@ -121,7 +129,7 @@
                   <div class="form-group col-md-3">
                     <label>width *</label>
                     <div class="input-group mb-3">
-                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" name="width" value="<?= set_value('width'); ?>">
+                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" id="width" onchange="Dimension()" name="width" value="<?= set_value('width'); ?>">
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">cm</span>
                       </div>
@@ -131,7 +139,7 @@
                   <div class="form-group col-md-3">
                     <label>height *</label>
                     <div class="input-group mb-3">
-                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" name="height" value="<?= set_value('height'); ?>">
+                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" id="height" onchange="Dimension()" name="height" value="<?= set_value('height'); ?>">
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">cm</span>
                       </div>
@@ -152,7 +160,7 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>dimension *</label>
-                    <input type="text" class="form-control" id="dimension" name="dimension" value="<?= set_value('dimension'); ?>">
+                    <input type="text" class="form-control" id="dimension" name="dimension" readonly>
                     <?= form_error('dimension', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
@@ -185,16 +193,30 @@
                     <?= form_error('cool_storage', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
+                <?php if (!empty($this->uri->segment(5))) { ?>
+                  <input type="hidden" name="id_client" value="<?= $id_client ?>">
+                  <input type="hidden" name="id_location" value="<?= $id_location ?>">
+                <?php } ?>
+                <button type="submit" class="btn btn-info float-right">CREATE</button>
               </div>
-
-          </div>
-
-          <div class="card-footer">
-            <button type="submit" class="btn btn-info float-right">CREATE</button>
           </div>
           </form>
         </div>
       </div>
     </div>
-  </section>\
+  </section>
 </div>
+
+<script>
+  function Dimension() {
+    var p = document.getElementById("length").value;
+    var l = document.getElementById("width").value;
+    var t = document.getElementById("height").value;
+    document.getElementById("dimension").value = (p * l * t) / 1000000;
+  }
+
+  function Barcode() {
+    var p = document.getElementById("item_nonbundling_code").value;
+    document.getElementById("item_nonbundling_barcode").value = p;
+  }
+</script>

@@ -69,6 +69,18 @@
                     <!-- <input type="text" class="form-control" id="id_stock_allocation" name="id_stock_allocation" value="<?= $client['id_stock_allocation']; ?>"> -->
                     <?= form_error('id_stock_allocation', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
+                  <div class="form-group col-md-6">
+                    <label for="">Active</label>
+                    <select name="active" id="active" class="form-control">
+                      <?php foreach ($select as $row) : ?>
+                        <?php if ($row == $client['active']) { ?>
+                          <option value="<?= $row ?>" selected><?= $row; ?></option>
+                        <?php } else { ?>
+                          <option value="<?= $row ?>"><?= $row; ?></option>
+                        <?php } ?>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
                 </div>
                 <button type="submit" class="btn btn-info">EDIT</button>
               </div>

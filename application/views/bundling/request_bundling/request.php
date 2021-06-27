@@ -26,12 +26,17 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>Request Bundling Code *</label>
-                    <input type="text" class="form-control" id="request_bundling_code" name="request_bundling_code" value="<?= set_value('request_bundling_code'); ?>">
+                    <input type="text" class="form-control" id="request_bundling_code" onchange="Barcode()" name="request_bundling_code" value="<?= set_value('request_bundling_code'); ?>">
                     <?= form_error('request_bundling_code', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
+                    <label>Barcode *</label>
+                    <input type="text" class="form-control" id="request_bundling_barcode" name="request_bundling_barcode" readonly>
+                    <?= form_error('request_bundling_barcode', '<small class="text-danger pl-2">', '</small>'); ?>
+                  </div>
+                  <div class="form-group col-md-6">
                     <label>Bundling Type *</label>
-                    <input type="text" class="form-control" id="bundling_type" name="bundling_type" value="<?= set_value('bundling_type'); ?>">
+                    <input type="text" class="form-control" id="bundling_type" name="bundling_type" value="Bundling From Inbound" readonly>
                     <?= form_error('bundling_type', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
@@ -81,5 +86,13 @@
           </div>
         </div>
       </div>
-  </section>\
+  </section>
 </div>
+
+
+<script>
+  function Barcode() {
+    var p = document.getElementById("request_bundling_code").value;
+    document.getElementById("request_bundling_barcode").value = p;
+  }
+</script>

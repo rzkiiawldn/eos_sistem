@@ -3,7 +3,11 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <a href="<?= base_url('bundling/request_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php if (!empty($this->uri->segment(5))) { ?>
+            <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } else { ?>
+            <a href="<?= base_url('bundling/request_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } ?>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -29,6 +33,13 @@
                   <div class="form-group">
                     <label class="pt-0 mt-0">Request Bundling Code</label>
                     <p class="mb-0 pb-0"><?= $request_bundling['request_bundling_code']; ?></p>
+                    <hr class="mt-0 pt-0">
+                  </div>
+                </div>
+                <div class="col-md-6 pt-0 mt-0">
+                  <div class="form-group">
+                    <label class="pt-0 mt-0">Barcode</label>
+                    <p class="mb-0 pb-0"><?= $request_bundling['request_bundling_barcode']; ?></p>
                     <hr class="mt-0 pt-0">
                   </div>
                 </div>
@@ -68,7 +79,11 @@
                   </div>
                 </div>
               </div>
-              <a href="<?= base_url('bundling/request_bundling'); ?>" class="btn btn-info float-right">Back</a>
+              <?php if (!empty($this->uri->segment(5))) { ?>
+                <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info float-right">Back</a>
+              <?php } else { ?>
+                <a href="<?= base_url('bundling/request_bundling'); ?>" class="btn btn-info float-right">Back</a>
+              <?php } ?>
             </div>
           </div>
         </div>

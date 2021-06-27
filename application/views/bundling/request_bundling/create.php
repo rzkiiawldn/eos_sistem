@@ -3,7 +3,11 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <a href="<?= base_url('bundling/request_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php if (!empty($this->uri->segment(5))) { ?>
+            <a href="<?= base_url('bundling/request_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } else { ?>
+            <a href="<?= base_url('bundling/request_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } ?>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -28,12 +32,17 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>Request Bundling Code *</label>
-                    <input type="text" class="form-control" id="request_bundling_code" name="request_bundling_code" value="<?= set_value('request_bundling_code'); ?>">
+                    <input type="text" class="form-control" id="request_bundling_code" onchange="Barcode()" name="request_bundling_code" value="<?= set_value('request_bundling_code'); ?>">
                     <?= form_error('request_bundling_code', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
+                    <label>Barcode *</label>
+                    <input type="text" class="form-control" id="request_bundling_barcode" name="request_bundling_barcode" readonly>
+                    <?= form_error('request_bundling_barcode', '<small class="text-danger pl-2">', '</small>'); ?>
+                  </div>
+                  <div class="form-group col-md-6">
                     <label>Bundling Type *</label>
-                    <input type="text" class="form-control" id="bundling_type" name="bundling_type" value="<?= set_value('bundling_type'); ?>">
+                    <input type="text" class="form-control" id="bundling_type" name="bundling_type" value="Bundling From Inbound" readonly>
                     <?= form_error('bundling_type', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
@@ -77,11 +86,22 @@
                     <?= form_error('id_status', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
+                <?php if (!empty($this->uri->segment(5))) { ?>
+                  <input type="hidden" name="id_client" value="<?= $id_client ?>">
+                  <input type="hidden" name="id_location" value="<?= $id_location ?>">
+                <?php } ?>
                 <button type="submit" class="btn btn-info float-right">CREATE</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-  </section>\
+  </section>
 </div>
+
+<script>
+  function Barcode() {
+    var p = document.getElementById("request_bundling_code").value;
+    document.getElementById("request_bundling_barcode").value = p;
+  }
+</script>

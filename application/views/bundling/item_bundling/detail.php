@@ -3,12 +3,24 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <a href="<?= base_url('bundling/item_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php if (!empty($this->uri->segment(5))) { ?>
+            <?php if ($user['department_id'] != 5) { ?>
+              <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } else { ?>
+              <a href="<?= base_url('bundling/item_bundling/index_client/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } ?>
+          <?php } else { ?>
+            <?php if ($user['department_id'] != 5) { ?>
+              <a href="<?= base_url('bundling/item_bundling'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } else { ?>
+              <a href="<?= base_url('bundling/item_bundling/index_client'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+            <?php } ?>
+          <?php } ?>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="<?= base_url('dashboard'); ?>">Home</a></li>
-            <li class="breadcrumb-item"><a href="<?= base_url('bunling/item_bundling'); ?>">Item</a></li>
+            <!-- <li class="breadcrumb-item"><a href="<?= base_url('bunling/item_bundling'); ?>">Item</a></li> -->
             <li class="breadcrumb-item active"><?= $judul; ?></li>
           </ol>
         </div>
@@ -42,7 +54,7 @@
                 <div class="col-md-6 pt-0 mt-0">
                   <div class="form-group">
                     <label class="pt-0 mt-0">Barcode</label>
-                    <p class="mb-0 pb-0"><?= $item_bundling['item_bundling_code']; ?></p>
+                    <p class="mb-0 pb-0"><?= $item_bundling['item_bundling_barcode']; ?></p>
                     <hr class="mt-0 pt-0">
                   </div>
                 </div>
@@ -60,12 +72,17 @@
                     <hr class="mt-0 pt-0">
                   </div>
                 </div>
-              </div>
-              <div class="row">
+                <div class="col-md-6 pt-0 mt-0">
+                  <div class="form-group">
+                    <label class="pt-0 mt-0">Manage By</label>
+                    <p class="mb-0 pb-0"><?= $item_bundling['manage_by_name']; ?></p>
+                    <hr class="mt-0 pt-0">
+                  </div>
+                </div>
                 <div class="col-md-6 pt-0 mt-0">
                   <div class="form-group">
                     <label class="pt-0 mt-0">created By</label>
-                    <p class="mb-0 pb-0"><?= $item_bundling['manage_by_name']; ?></p>
+                    <p class="mb-0 pb-0"><?= $item_bundling['created_by']; ?></p>
                     <hr class="mt-0 pt-0">
                   </div>
                 </div>
@@ -94,13 +111,17 @@
                           <td><?= $no++; ?></td>
                           <td><?= $row['item_nonbundling_name']; ?></td>
                           <td><?= $row['item_nonbundling_code']; ?></td>
-                          <td><?= $row['barcode']; ?></td>
+                          <td><?= $row['item_nonbundling_barcode']; ?></td>
                           <td><?= $row['item_qty']; ?></td>
                         </tr>
                       <?php endforeach; ?>
                     </table>
                   </div>
-                  <a href="<?= base_url('bundling/item_bundling') ?>" class="btn btn-info float-right">Back</a>
+                  <?php if (!empty($this->uri->segment(5))) { ?>
+                    <a href="<?= base_url('bundling/item_bundling/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info float-right">Back</a>
+                  <?php } else { ?>
+                    <a href="<?= base_url('bundling/item_bundling') ?>" class="btn btn-info float-right">Back</a>
+                  <?php } ?>
                 </div>
               </div>
             </div>

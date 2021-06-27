@@ -3,7 +3,11 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <a href="<?= base_url('master_data/item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php if (!empty($this->uri->segment(5))) { ?>
+            <a href="<?= base_url('master_data/item/index/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } else { ?>
+            <a href="<?= base_url('master_data/item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> BACK</a>
+          <?php } ?>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -29,7 +33,7 @@
                   <input type="hidden" class="form-control" id="id_item_nonbundling" name="id_item_nonbundling" value="<?= $item_nonbundling['id_item_nonbundling']; ?>">
                   <div class="form-group col-md-6">
                     <label>Item Nonbundling Code *</label>
-                    <input type="text" class="form-control" id="item_nonbundling_code" name="item_nonbundling_code" value="<?= $item_nonbundling['item_nonbundling_code']; ?>">
+                    <input type="text" class="form-control" id="item_nonbundling_code" onchange="Barcode()" name="item_nonbundling_code" value="<?= $item_nonbundling['item_nonbundling_code']; ?>">
                     <?= form_error('item_nonbundling_code', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
@@ -39,8 +43,8 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>barcode *</label>
-                    <input type="text" class="form-control" id="barcode" name="barcode" value="<?= $item_nonbundling['barcode']; ?>">
-                    <?= form_error('barcode', '<small class="text-danger pl-2">', '</small>'); ?>
+                    <input type="text" class="form-control" id="item_nonbundling_barcode" name="item_nonbundling_barcode" readonly value="<?= $item_nonbundling['item_nonbundling_barcode']; ?>">
+                    <?= form_error('item_nonbundling_barcode', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                   <div class="form-group col-md-6">
                     <label>Manage By *</label>
@@ -108,7 +112,15 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>size *</label>
-                    <input type="text" class="form-control" id="size" name="size" value="<?= $item_nonbundling['size']; ?>">
+                    <select name="size" id="size" class="form-control">
+                      <?php foreach ($size as $row) : ?>
+                        <?php if ($row == $item_nonbundling['size']) { ?>
+                          <option value="<?= $row ?>" selected><?= $row; ?></option>
+                        <?php } else { ?>
+                          <option value="<?= $row ?>"><?= $row; ?></option>
+                        <?php } ?>
+                      <?php endforeach; ?>
+                    </select>
                     <?= form_error('size', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
@@ -116,7 +128,7 @@
                   <div class="form-group col-md-3">
                     <label>length *</label>
                     <div class="input-group mb-3">
-                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" name="length" value="<?= $item_nonbundling['length']; ?>">
+                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" id="length" onchange="Dimension()" name="length" value="<?= $item_nonbundling['length']; ?>">
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">cm</span>
                       </div>
@@ -126,7 +138,7 @@
                   <div class="form-group col-md-3">
                     <label>width *</label>
                     <div class="input-group mb-3">
-                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" name="width" value="<?= $item_nonbundling['width']; ?>">
+                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" id="width" onchange="Dimension()" name="width" value="<?= $item_nonbundling['width']; ?>">
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">cm</span>
                       </div>
@@ -136,7 +148,7 @@
                   <div class="form-group col-md-3">
                     <label>height *</label>
                     <div class="input-group mb-3">
-                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" name="height" value="<?= $item_nonbundling['height']; ?>">
+                      <input type="number" min="1" class="form-control" aria-describedby="basic-addon1" id="height" onchange="Dimension()" name="height" value="<?= $item_nonbundling['height']; ?>">
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">cm</span>
                       </div>
@@ -157,7 +169,7 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>dimension *</label>
-                    <input type="text" class="form-control" id="dimension" name="dimension" value="<?= $item_nonbundling['dimension']; ?>">
+                    <input type="text" class="form-control" id="dimension" name="dimension" readonly value="<?= $item_nonbundling['dimension']; ?>">
                     <?= form_error('dimension', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
@@ -205,16 +217,27 @@
                     <?= form_error('cool_storage', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-info float-right">EDIT</button>
               </div>
-
-          </div>
-
-          <div class="card-footer">
-            <button type="submit" class="btn btn-info float-right">EDIT</button>
           </div>
           </form>
         </div>
       </div>
     </div>
-  </section>\
+  </section>
 </div>
+
+
+<script>
+  function Dimension() {
+    var p = document.getElementById("length").value;
+    var l = document.getElementById("width").value;
+    var t = document.getElementById("height").value;
+    document.getElementById("dimension").value = (p * l * t) / 1000000;
+  }
+
+  function Barcode() {
+    var p = document.getElementById("item_nonbundling_code").value;
+    document.getElementById("item_nonbundling_barcode").value = p;
+  }
+</script>

@@ -59,6 +59,14 @@
                     </select>
                     <?= form_error('id_stock_allocation', '<small class="text-danger pl-2">', '</small>'); ?>
                   </div>
+                  <div class="form-group col-md-6">
+                    <label for="">Active</label>
+                    <select name="active" id="active" class="form-control">
+                      <?php foreach ($select as $row) : ?>
+                        <option value="<?= $row ?>"><?= $row; ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
                 </div>
                 <button type="submit" class="btn btn-info">CREATE</button>
               </div>

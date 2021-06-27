@@ -3,9 +3,16 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
-            <a href="<?= base_url('bundling/request_bundling/create_item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> CREATE</a>
+          <?php if (empty($this->uri->segment(5))) { ?>
+            <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
+              <a href="<?= base_url('bundling/request_bundling/create_item'); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> CREATE</a>
+            <?php } ?>
+          <?php } else { ?>
+            <?php if ($user['department_id'] == 1 || $user['department_id'] == 2 || $user['department_id'] == 3) { ?>
+              <a href="<?= base_url('bundling/request_bundling/create_item/' . $this->uri->segment(4) . '/' . $this->uri->segment(5)); ?>" class="btn btn-info text-light"> <i class="far fa-sticky-note mr-2"></i> CREATE</a>
+            <?php } ?>
           <?php } ?>
+
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -37,10 +44,10 @@
                 <thead>
                   <tr>
                     <th width="5%">NO</th>
-                    <th>REQUEST BUNDLING CODE</th>
+                    <th>CODE</th>
                     <th>BUNDLING TYPE</th>
                     <th>ITEM BUNDLING</th>
-                    <th>REQUEST QUANTITY</th>
+                    <th>Qty</th>
                     <th>PACKING TYPE</th>
                     <th>STATUS</th>
                     <th width="15%">ACTION</th>
@@ -58,9 +65,15 @@
                       <td><?= $row['packing_type_name']; ?></td>
                       <td><?= $row['status']; ?></td>
                       <td>
-                        <a href="<?= base_url('bundling/request_bundling/detail_item/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
-                        <a href="<?= base_url('bundling/request_bundling/edit_item/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-success" title="edit"><i class="fas fa-pen"></i></a>
-                        <a href="<?= base_url('bundling/request_bundling/delete_item/' . $row['id_request_bundling']); ?>" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-sm btn-danger" title="hapus"><i class="fas fa-trash"></i></a>
+                        <?php if (empty($this->uri->segment(5))) { ?>
+                          <a href="<?= base_url('bundling/request_bundling/detail_item/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
+                          <a href="<?= base_url('bundling/request_bundling/edit_item/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-success" title="edit"><i class="fas fa-pen"></i></a>
+                          <a href="<?= base_url('bundling/request_bundling/delete_item/' . $row['id_request_bundling']); ?>" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-sm btn-danger" title="hapus"><i class="fas fa-trash"></i></a>
+                        <?php } else { ?>
+                          <a href="<?= base_url('bundling/request_bundling/detail_item/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-info" title="detail"><i class="fas fa-eye"></i></a>
+                          <a href="<?= base_url('bundling/request_bundling/edit_item/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/' . $row['id_request_bundling']); ?>" class="btn btn-sm btn-success" title="edit"><i class="fas fa-pen"></i></a>
+                          <a href="<?= base_url('bundling/request_bundling/delete_item/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/' . $row['id_request_bundling']); ?>" onclick="return confirm('Apakah Anda Yakin ?')" class="btn btn-sm btn-danger" title="hapus"><i class="fas fa-trash"></i></a>
+                        <?php } ?>
                       </td>
                     </tr>
                   <?php endforeach; ?>
